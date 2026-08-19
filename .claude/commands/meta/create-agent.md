@@ -11,7 +11,7 @@ Your task is to create a new Claude Code sub-agent based on the user's requireme
 
 `.claude/agents/` is a flat namespace — Claude Code doesn't discover agents in subdirectories, so file location can't separate "framework" agents from "this project's own." The prefix does that job instead:
 
-- Codride's 8 shipped agents (`branch-master-docs-checker`, `branch-code-reviewer`, `branch-documentation-writer`, `branch-test-planner`, `adr-compliance-checker`, `github-project-sync`, `python-developer`, `typescript-developer`) keep their plain names — no prefix. Don't create a new agent using one of these names.
+- CoDriDe's 8 shipped agents (`branch-master-docs-checker`, `branch-code-reviewer`, `branch-documentation-writer`, `branch-test-planner`, `adr-compliance-checker`, `github-project-sync`, `python-developer`, `typescript-developer`) keep their plain names — no prefix. Don't create a new agent using one of these names.
 - **Every agent this command creates gets a `project-` prefix by default** (e.g. `project-notion-specialist.md`, `project-nestjs-specialist.md`). This makes it immediately obvious, from the filename alone, which agents are portable framework core versus specific to this project.
 - **The human never needs to type the prefix, or a filename-shaped name at all.** They just describe the agent in plain language — the prefix is applied automatically, and free-text input gets normalized (see step 2).
 - Only skip the prefix if the human explicitly asks you to, and confirm that's really what they want first — the default exists precisely so nobody has to think about this each time.

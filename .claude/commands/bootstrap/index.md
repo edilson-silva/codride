@@ -11,7 +11,7 @@ Builds or refreshes an `index.md` that points to every useful documentation file
 
 1. Check for `projects/` (or `@/projects/`) at the repo root, containing multiple subfolders that each look like an independent project (their own `docs/` or `index.md`).
 2. If that structure exists: this is a **multi-project meta-repo**. Follow "Multi-project mode" below.
-3. Otherwise: this is a **single project** (the normal Codride shape — `docs/business-context/`, `docs/technical-context/` at the root). Follow "Single-project mode" below.
+3. Otherwise: this is a **single project** (the normal CoDriDe shape — `docs/business-context/`, `docs/technical-context/` at the root). Follow "Single-project mode" below.
 
 If it's genuinely ambiguous (e.g., a `projects/` folder exists but only has one entry, or doesn't look like independent projects), ask the human which mode applies instead of guessing.
 
