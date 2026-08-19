@@ -1,0 +1,5 @@
+# Local Claude Code overrides — machine/session-specific, not shared
+.claude/settings.local.json
+
+# macOS
+.DS_Store
