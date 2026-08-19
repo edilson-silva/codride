@@ -1,6 +1,6 @@
-# Codride
+# CoDriDe
 
-Codride is a Context Driven Development (CDD) framework for Claude Code: a set of commands and agents (under `.claude/`) meant to be copied into another project's repo to structure how features get discovered, specified, built, and shipped with Claude.
+CoDriDe is a Context Driven Development (CDD) framework for Claude Code: a set of commands and agents (under `.claude/`) meant to be copied into another project's repo to structure how features get discovered, specified, built, and shipped with Claude.
 
 The framework treats **master docs** as the project's "DNA": living documents (business context + technical context) that every feature gets checked against, both before it's built (`/product:validate`) and after (`branch-master-docs-checker`).
 
@@ -99,7 +99,7 @@ Doc-generation utilities live under `.claude/commands/bootstrap/` (`tech-docs`, 
 
 Add project- or stack-specific agents with `/meta:create-agent` rather than editing this set — keep the framework's own agent roster generic. `.claude/agents/` has no subdirectories (Claude Code doesn't discover agents in them), so `/meta:create-agent` names every agent it creates `project-*.md` by default — that prefix is what separates "this project's own" from the 8 unprefixed names above.
 
-## Adopting Codride in a project
+## Adopting CoDriDe in a project
 
 1. Copy `.claude/` (and this file, merged with any project-specific instructions) into the target repo.
 2. Run `/engineer:discover` once to generate `docs/technical-context/`.
