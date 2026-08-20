@@ -375,11 +375,14 @@ Crea un nuevo subagente bajo `.claude/agents/`, nombrado `project-<name>.md` por
 
 ```
 docs/
+├── index.md                    # punto de entrada a ambos contextos abajo — /bootstrap:index, modo single-project
+│                                #   (distinto de business-context/index.md justo abajo)
 ├── business-context/           # master docs: estrategia, personas, catálogo de features
 │   ├── index.md                 # punto de entrada, generado por /bootstrap:business-docs
 │   ├── features/                 # un .md por feature — /product:spec o /product:quick-spec lo escribe,
 │   │                             #   /product:sync-github lo mantiene sincronizado con las GitHub Issues
-│   └── brainstorm/               # salida de sesión de /product:brainstorm
+│   ├── brainstorm/               # salida de sesión de /product:brainstorm
+│   └── CUSTOMER_PERSONAS.md, PRODUCT_STRATEGY.md, COMPETITIVE_LANDSCAPE.md, ... (ver /bootstrap:business-docs)
 └── technical-context/          # la forma depende de qué comando la generó:
     ├── project-briefing.md      #   /engineer:discover  → briefing compacto (+ briefing/*.md abajo)
     ├── briefing/                 #   critical-rules, adrs-summary, backend-conventions, tech-stack
@@ -390,7 +393,8 @@ docs/
 .claude/
 ├── agents/                          # los 8 agentes de arriba (+ project-*.md que agregues)
 ├── commands/                        # engineer/, product/, bootstrap/, meta/, warm-up.md
-├── work/<type>/<slug>/               # context.md, architecture.md, plan.md por elemento de trabajo en curso
+├── work/<type>/<slug>/               # context.md, architecture.md, plan.md, y un test-coverage-report.md
+│                                     #   condicional (de /engineer:coverage) por elemento en curso
 │   ├── feat/csv-order-export/        # p. ej. una feature
 │   └── fix/password-reset-plus-alias/ # p. ej. una corrección de bug
 └── rules/product-agent.md           # persona de PM/arquitecto siempre activa
@@ -574,13 +578,23 @@ claude "/product:spec 42"
 #   también escribe docs/business-context/features/csv-order-export.md
 
 claude "/engineer:context feat/csv-order-export"
+# → entrevista → context.md
+
 claude "/engineer:architecture feat/csv-order-export"
+# → diseño → architecture.md, verificado contra context.md
+
 claude "/engineer:plan feat/csv-order-export"
+# → .claude/work/feat/csv-order-export/plan.md (por fases)
+
 claude "/engineer:work .claude/work/feat/csv-order-export"
-# → implementa fase por fase, test-first contra los criterios de aceptación
+# → implementa fase por fase, test-first contra los criterios de aceptación;
+#   sincroniza el issue #42 a "in progress"
 
 claude "/engineer:pre-pr"
+# → validate + review se ejecutan en paralelo, luego sync-docs + coverage
+
 claude "/engineer:pr"
+# → hace commit, abre el PR, mueve el issue #42 a "in review"
 ```
 
 ### Ejemplo 2: Tarea Bien Entendida, Vía Rápida
