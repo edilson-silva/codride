@@ -53,7 +53,7 @@ This repo *is* the framework: there's no application code here. You copy `.claud
 - [`gh` CLI](https://cli.github.com/), installed and authenticated (`gh auth status`)
 - Git
 
-### 4-Step Setup
+### 5-Step Setup
 
 **Step 1: Get the framework**
 ```bash
@@ -66,12 +66,17 @@ cp -r codride/.claude codride/CLAUDE.md /path/to/your-project/
 cd /path/to/your-project
 ```
 
-**Step 3: Scan the codebase (optional, but sharpens everything else)**
+**Step 3: Run the health check**
+```bash
+claude "/engineer:doctor"
+```
+
+**Step 4: Scan the codebase (optional, but sharpens everything else)**
 ```bash
 claude "/engineer:discover"
 ```
 
-**Step 4: Warm up and start**
+**Step 5: Warm up and start**
 ```bash
 claude "/warm-up"
 ```
@@ -148,13 +153,19 @@ These 8 are CoDriDe's portable core — unprefixed names. Anything created via `
 Commands are invoked as `/<folder>:<file>`, e.g. `.claude/commands/product/spec.md` → `/product:spec`. `/warm-up` lives at the top level, so it's just `/warm-up`.
 
 <details>
-<summary><strong>Setup</strong> — <code>/warm-up</code>, <code>/engineer:discover</code></summary>
+<summary><strong>Setup</strong> — <code>/warm-up</code>, <code>/engineer:doctor</code>, <code>/engineer:discover</code></summary>
 
 #### `/warm-up`
 Loads both halves of the master docs — product (`docs/business-context/`) and engineering (`docs/technical-context/`) — plus the root `README.md`, so the session starts with the right context loaded. It reads index/entry-point files only, not everything they point to. If a piece doesn't exist yet, it says so and moves on.
 
 - **Usage**: `/warm-up` (project name is optional, only useful in a multi-project workspace)
 - **Tips**: run this at the start of any session where you'll touch product or architecture decisions. Skip it for a one-line bug fix.
+
+#### `/engineer:doctor`
+A pre-flight health check, not a fix-it command: reports `gh` auth status, the repo's actual default branch, whether a test suite exists, the state of master docs, GitHub label taxonomy, and whether the repo is a monorepo — all in one pass, without changing anything.
+
+- **Usage**: `/engineer:doctor`
+- **Tips**: run it right after copying `.claude/` into a project, whether that project is brand-new or has years of history — on an existing repo it's what surfaces "this isn't `main`, it's `develop`" or "there's no test suite" before those assumptions break a command mid-pipeline instead of at the start.
 
 #### `/engineer:discover`
 Scans the codebase once (or incrementally) and writes `docs/technical-context/project-briefing.md` plus `docs/technical-context/briefing/{critical-rules,adrs-summary,backend-conventions,tech-stack}.md`. Detects ADRs, infers architectural conventions, and identifies the stack from the manifest file.

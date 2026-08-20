@@ -53,7 +53,7 @@ Este repositório *é* o framework: não há código de aplicação aqui. Você 
 - [`gh` CLI](https://cli.github.com/), instalado e autenticado (`gh auth status`)
 - Git
 
-### Configuração em 4 Passos
+### Configuração em 5 Passos
 
 **Passo 1: Baixe o framework**
 ```bash
@@ -66,12 +66,17 @@ cp -r codride/.claude codride/CLAUDE.md /path/to/your-project/
 cd /path/to/your-project
 ```
 
-**Passo 3: Escaneie a base de código (opcional, mas deixa tudo mais afiado)**
+**Passo 3: Rode a checagem de saúde**
+```bash
+claude "/engineer:doctor"
+```
+
+**Passo 4: Escaneie a base de código (opcional, mas deixa tudo mais afiado)**
 ```bash
 claude "/engineer:discover"
 ```
 
-**Passo 4: Aqueça a sessão e comece**
+**Passo 5: Aqueça a sessão e comece**
 ```bash
 claude "/warm-up"
 ```
@@ -148,13 +153,19 @@ Esses 8 são o núcleo portável do CoDriDe — nomes sem prefixo. Qualquer cois
 Comandos são invocados como `/<pasta>:<arquivo>`, ex.: `.claude/commands/product/spec.md` → `/product:spec`. `/warm-up` vive no nível raiz, então é só `/warm-up`.
 
 <details>
-<summary><strong>Configuração</strong> — <code>/warm-up</code>, <code>/engineer:discover</code></summary>
+<summary><strong>Configuração</strong> — <code>/warm-up</code>, <code>/engineer:doctor</code>, <code>/engineer:discover</code></summary>
 
 #### `/warm-up`
 Carrega as duas metades dos master docs — produto (`docs/business-context/`) e engenharia (`docs/technical-context/`) — mais o `README.md` raiz, pra que a sessão comece com o contexto certo carregado. Ele lê só os arquivos de índice/entrada, não tudo que eles apontam. Se alguma peça ainda não existir, ele avisa e segue em frente.
 
 - **Uso**: `/warm-up` (o nome do projeto é opcional, só útil num workspace multi-projeto)
 - **Dicas**: rode isso no início de qualquer sessão onde você vai mexer em decisões de produto ou arquitetura. Pule pra um fix de uma linha só.
+
+#### `/engineer:doctor`
+Uma checagem de saúde de pré-voo, não um comando de correção: reporta o status de autenticação do `gh`, a branch padrão real do repositório, se existe suite de testes, o estado dos master docs, a taxonomia de labels do GitHub, e se o repositório é um monorepo — tudo numa passada, sem mudar nada.
+
+- **Uso**: `/engineer:doctor`
+- **Dicas**: rode logo depois de copiar `.claude/` pra um projeto, seja ele novo ou com anos de história — num repositório existente é ele que revela "isso não é `main`, é `develop`" ou "não existe suite de testes" antes que essas suposições quebrem um comando no meio do pipeline em vez de logo no início.
 
 #### `/engineer:discover`
 Escaneia a base de código uma vez (ou incrementalmente) e escreve `docs/technical-context/project-briefing.md` mais `docs/technical-context/briefing/{critical-rules,adrs-summary,backend-conventions,tech-stack}.md`. Detecta ADRs, infere convenções arquiteturais, e identifica o stack a partir do arquivo de manifesto.

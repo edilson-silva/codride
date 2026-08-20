@@ -53,7 +53,7 @@ Este repositorio *es* el framework: aquí no hay código de aplicación. Copias 
 - [CLI de `gh`](https://cli.github.com/), instalada y autenticada (`gh auth status`)
 - Git
 
-### Configuración en 4 Pasos
+### Configuración en 5 Pasos
 
 **Paso 1: Obtén el framework**
 ```bash
@@ -66,12 +66,17 @@ cp -r codride/.claude codride/CLAUDE.md /path/to/your-project/
 cd /path/to/your-project
 ```
 
-**Paso 3: Escanea la base de código (opcional, pero afina todo lo demás)**
+**Paso 3: Ejecuta la verificación de estado**
+```bash
+claude "/engineer:doctor"
+```
+
+**Paso 4: Escanea la base de código (opcional, pero afina todo lo demás)**
 ```bash
 claude "/engineer:discover"
 ```
 
-**Paso 4: Calienta la sesión y comienza**
+**Paso 5: Calienta la sesión y comienza**
 ```bash
 claude "/warm-up"
 ```
@@ -148,13 +153,19 @@ Estos 8 son el núcleo portable de CoDriDe — nombres sin prefijo. Cualquier co
 Los comandos se invocan como `/<carpeta>:<archivo>`, p. ej. `.claude/commands/product/spec.md` → `/product:spec`. `/warm-up` vive en el nivel raíz, así que es solo `/warm-up`.
 
 <details>
-<summary><strong>Configuración</strong> — <code>/warm-up</code>, <code>/engineer:discover</code></summary>
+<summary><strong>Configuración</strong> — <code>/warm-up</code>, <code>/engineer:doctor</code>, <code>/engineer:discover</code></summary>
 
 #### `/warm-up`
 Carga las dos mitades de los master docs — producto (`docs/business-context/`) e ingeniería (`docs/technical-context/`) — más el `README.md` raíz, para que la sesión comience con el contexto correcto cargado. Solo lee los archivos índice/punto de entrada, no todo lo que señalan. Si alguna pieza aún no existe, lo indica y continúa.
 
 - **Uso**: `/warm-up` (el nombre del proyecto es opcional, solo útil en un espacio de trabajo multi-proyecto)
 - **Consejos**: ejecútalo al inicio de cualquier sesión donde vayas a tocar decisiones de producto o arquitectura. Sáltalo para una corrección de una sola línea.
+
+#### `/engineer:doctor`
+Una verificación de estado previa al vuelo, no un comando de corrección: reporta el estado de autenticación de `gh`, la rama predeterminada real del repositorio, si existe una suite de pruebas, el estado de los master docs, la taxonomía de etiquetas de GitHub, y si el repositorio es un monorepo — todo en una sola pasada, sin cambiar nada.
+
+- **Uso**: `/engineer:doctor`
+- **Consejos**: ejecútalo justo después de copiar `.claude/` en un proyecto, ya sea nuevo o con años de historia — en un repositorio existente es lo que revela "esto no es `main`, es `develop`" o "no hay suite de pruebas" antes de que esas suposiciones rompan un comando a mitad del pipeline en lugar de al principio.
 
 #### `/engineer:discover`
 Escanea la base de código una vez (o de forma incremental) y escribe `docs/technical-context/project-briefing.md` más `docs/technical-context/briefing/{critical-rules,adrs-summary,backend-conventions,tech-stack}.md`. Detecta ADR, infiere convenciones arquitectónicas, e identifica el stack a partir del archivo de manifiesto.

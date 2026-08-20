@@ -13,6 +13,9 @@ For full command-by-command documentation, best practices, and adoption instruct
 ```
 /warm-up
    │
+   ├─ (new or unfamiliar project) /engineer:doctor ─── pre-flight check: gh auth, default branch,
+   │                                                     test suite, master docs, labels, monorepo shape
+   │
    ├─ (once, optional) /engineer:discover ─── scans ADRs + backend, writes docs/technical-context/project-briefing.md
    │
    ├─ Product track
@@ -102,8 +105,9 @@ Add project- or stack-specific agents with `/meta:create-agent` rather than edit
 ## Adopting CoDriDe in a project
 
 1. Copy `.claude/` (and this file, merged with any project-specific instructions) into the target repo.
-2. Run `/engineer:discover` once to generate `docs/technical-context/`.
-3. Write master docs under `docs/business-context/` (use `/bootstrap:business-docs` and `/bootstrap:tech-docs` to bootstrap them).
-4. From there, follow the pipeline above.
+2. Run `/engineer:doctor` — confirms `gh` auth, the real default branch, whether a test suite exists, and what's already there on an existing project, before anything else runs on assumptions.
+3. Run `/engineer:discover` once to generate `docs/technical-context/`.
+4. Write master docs under `docs/business-context/` (use `/bootstrap:business-docs` and `/bootstrap:tech-docs` to bootstrap them).
+5. From there, follow the pipeline above.
 
 See [README.md](README.md) for the full walkthrough.
