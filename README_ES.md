@@ -117,6 +117,8 @@ La configuración en 5 pasos de arriba funciona para cualquier proyecto, pero un
 - `docs/technical-context/briefing/backend-conventions.md` — estructura de carpetas, nomenclatura, patrones de código
 - `docs/technical-context/briefing/tech-stack.md` — runtime, framework, base de datos/ORM, bibliotecas clave
 
+También ejecuta `adr-compliance-checker` contra el código existente en cuanto los ADR de arriba están catalogados — eso se reporta directamente en la salida del comando, no se escribe en un archivo.
+
 **Paso 4 (opcional, más profundo): el master doc técnico completo**
 ```bash
 claude "/bootstrap:tech-docs [enlaces al repo/docs, si los hay]"

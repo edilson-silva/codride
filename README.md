@@ -117,6 +117,8 @@ The 5-step setup above works for any project, but an existing codebase already h
 - `docs/technical-context/briefing/backend-conventions.md` — folder structure, naming, code patterns
 - `docs/technical-context/briefing/tech-stack.md` — runtime, framework, database/ORM, key libraries
 
+It also runs `adr-compliance-checker` against the existing code once the ADRs above are cataloged — that's reported directly in the command's output, not written to a file.
+
 **Step 4 (optional, deeper): the full technical master doc**
 ```bash
 claude "/bootstrap:tech-docs [links to repo/docs, if any]"

@@ -117,6 +117,8 @@ O `/engineer:discover` é a passada rápida e automática pela base de código: 
 - `docs/technical-context/briefing/backend-conventions.md` — estrutura de pastas, nomenclatura, padrões de código
 - `docs/technical-context/briefing/tech-stack.md` — runtime, framework, banco de dados/ORM, bibliotecas-chave
 
+Ele também roda o `adr-compliance-checker` contra o código existente assim que os ADRs acima são catalogados — isso é reportado direto na saída do comando, não escrito em arquivo.
+
 **Passo 4 (opcional, mais profundo): o master doc técnico completo**
 ```bash
 claude "/bootstrap:tech-docs [links pro repo/docs, se houver]"
