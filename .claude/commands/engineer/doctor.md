@@ -29,7 +29,7 @@ Run all of these and collect the results before reporting — don't stop at the 
 - Does `docs/technical-context/adr/` (or `docs/adr/`, `adr/`) exist, and roughly how many ADRs are in it?
 
 ### 5. GitHub label taxonomy
-- `gh label list` — check whether the labels this framework's commands reference by default exist: `status:todo`, `status:in-progress`, `status:in-review`, `bug`, `enhancement`, `improvement`, `research`.
+- `gh label list` — check whether the labels this framework's commands reference by default exist: `status:backlog`, `status:todo`, `status:in-progress`, `status:in-review`, `priority:critical`, `priority:high`, `priority:medium`, `priority:low`, `bug`, `enhancement`, `improvement`, `research`. (`module:*` labels are created dynamically per module by `github-project-sync`, so there's nothing fixed to check there.)
 - Missing labels aren't an error — every command that uses them already says "adjust to what the repo uses" — but report which ones are missing so the human can decide whether to create them or keep redirecting commands to different names each time.
 
 ### 6. Monorepo shape

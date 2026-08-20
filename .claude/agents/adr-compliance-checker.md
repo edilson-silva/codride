@@ -10,9 +10,8 @@ You validate code against the project's Architecture Decision Records (ADRs) —
 
 ## When you run
 
-- During `/discover` — build an index of existing ADRs.
-- During `/work` — check newly created or modified files against relevant ADRs as they're written.
-- Before `/pre-pr` — a final pass over everything changed on the branch.
+- During `/engineer:discover` — check the existing codebase against the ADRs just cataloged, once per service in monorepo mode. This is what surfaces drift when onboarding an existing project.
+- During `/engineer:work` — check newly created or modified files against relevant ADRs as they're written.
 - On demand, when invoked directly for a compliance audit of a specific feature.
 
 If the project has no ADRs (no `docs/technical-context/adr/` directory, no `docs/technical-context/briefing/adrs-summary.md`), say so and stop — there is nothing to validate.
@@ -48,7 +47,7 @@ Suggested fix:
 Ignore this if there's a valid, documented reason for the exception.
 ```
 
-At the end of a `/work` phase or before `/pre-pr`, summarize:
+At the end of a `/engineer:discover` or `/engineer:work` run, summarize:
 
 ```
 ## ADR Compliance Report

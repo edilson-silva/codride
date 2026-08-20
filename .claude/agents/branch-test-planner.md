@@ -60,7 +60,7 @@ Determine what tests are missing:
 - Integration points that need testing
 
 ### 6. Generate Test Coverage Report
-Create a comprehensive test_coverage_branch_report.md with:
+Create a comprehensive report with:
 
 ````markdown
 # Branch Test Coverage Analysis
@@ -160,4 +160,4 @@ Create a comprehensive test_coverage_branch_report.md with:
 - Use existing test utilities and helpers
 
 ## Output
-Always write findings to test_coverage_branch_report.md, replacing any existing file. Make recommendations specific, actionable, and include example test structures where helpful. Focus only on what's changed in the current branch to keep the scope manageable.
+If step 2 identified a work item folder (`.claude/work/<type>/<slug>/`), write the report there as `test-coverage-report.md`, replacing any existing file — it belongs alongside that unit of work's `context.md`/`architecture.md`/`plan.md`, not scattered at the repo root. If no work item folder exists for this branch, don't write a file at all: present the report directly in chat instead, since there's no natural home for it on disk. Make recommendations specific, actionable, and include example test structures where helpful. Focus only on what's changed in the current branch to keep the scope manageable.
