@@ -104,6 +104,63 @@ claude "/engineer:pr"
 
 Você não precisa de tudo isso no primeiro dia — `/engineer:context` e `/engineer:architecture` funcionam bem sem master docs ou um briefing de descoberta; eles só têm menos contexto pra usar.
 
+### Adotando o CoDriDe em um Projeto Existente
+
+A configuração em 5 passos acima funciona pra qualquer projeto, mas uma base de código existente já tem sinal valioso pra minerar — código, README, issues, ADRs — então os comandos de bootstrap, por padrão, analisam esse material primeiro e só fazem entrevista pra preencher as lacunas. Esse é o **modo Analysis**; um projeto novo/vazio roda o **modo Collection**, uma entrevista do zero (veja as [Perguntas Frequentes](#-perguntas-frequentes)).
+
+**Passos 1-3: iguais à configuração em 5 passos** — copie o `.claude/`, rode o `/engineer:doctor`, rode o `/engineer:discover`.
+
+O `/engineer:discover` é a passada rápida e automática pela base de código: sem entrevista, seguro pra rodar de novo incrementalmente conforme o código evolui. Ele escreve:
+- `docs/technical-context/project-briefing.md` — índice mestre + resumo
+- `docs/technical-context/briefing/critical-rules.md` — as 3-5 regras mais críticas, copiadas por completo em todo `context.md` futuro
+- `docs/technical-context/briefing/adrs-summary.md` — resumos indexados de ADRs (criado com uma nota "nenhum ainda" se o projeto não tiver ADRs)
+- `docs/technical-context/briefing/backend-conventions.md` — estrutura de pastas, nomenclatura, padrões de código
+- `docs/technical-context/briefing/tech-stack.md` — runtime, framework, banco de dados/ORM, bibliotecas-chave
+
+**Passo 4 (opcional, mais profundo): o master doc técnico completo**
+```bash
+claude "/bootstrap:tech-docs <links pro repo/docs, se houver>"
+```
+Mais pesado que o `/engineer:discover` — ele te entrevista (~10 perguntas) sobre decisões de arquitetura, fluxos de trabalho e desafios conhecidos, e então escreve a arquitetura técnica completa:
+- `docs/technical-context/index.md` — índice mestre
+- `docs/technical-context/project_charter.md` — visão, critérios de sucesso, escopo, stakeholders
+- `docs/technical-context/adr/` — rascunhos de ADRs pras decisões que ele encontrou no código mas que nunca foram registradas
+- `docs/technical-context/CLAUDE.meta.md` — guia de desenvolvimento pra IA (estilo de código, pegadinhas, padrões)
+- `docs/technical-context/CODEBASE_GUIDE.md` — estrutura de diretórios anotada, fluxo de dados, integrações
+- `docs/technical-context/BUSINESS_LOGIC.md` — regras e fluxos de domínio (se houver lógica de domínio complexa)
+- `docs/technical-context/API_SPECIFICATION.md` — endpoints, autenticação, modelos de dados (se houver APIs)
+- `docs/technical-context/CONTRIBUTING.md` — estratégia de branch, processo de review, requisitos de teste
+- `docs/technical-context/TROUBLESHOOTING.md` — problemas comuns e abordagens de debug
+- `docs/technical-context/ARCHITECTURE_CHALLENGES.md` — pontos de dor conhecidos e o que o time quer melhorar
+
+Rode só o `/engineer:discover` se você só quer que o `context.md` tenha algo pra usar rapidamente; rode o `/bootstrap:tech-docs` quando quiser o documento de "DNA" completo registrado. Rodar os dois é normal — o `/engineer:doctor` reporta os dois formatos presentes, sem tratar isso como conflito.
+
+**Passo 5: o lado de negócio**
+```bash
+claude "/bootstrap:business-docs <links pra docs/tickets do produto, se houver>"
+```
+Com material existente pra minerar (um README com descrição real do produto, issues no GitHub, páginas de marketing), isso roda em modo Analysis: pesquisa o produto, o mercado e os clientes, faz uma rodada de perguntas de esclarecimento, e então escreve:
+- `docs/business-context/index.md` — índice mestre
+- `docs/business-context/CUSTOMER_PERSONAS.md`
+- `docs/business-context/CUSTOMER_JOURNEY.md`
+- `docs/business-context/VOICE_OF_CUSTOMER.md`
+- `docs/business-context/PRODUCT_STRATEGY.md`
+- `docs/business-context/features/` — um arquivo por feature existente
+- `docs/business-context/PRODUCT_METRICS.md`
+- `docs/business-context/COMPETITIVE_LANDSCAPE.md`
+- `docs/business-context/INDUSTRY_TRENDS.md`
+- `docs/business-context/SALES_PROCESS.md` (se aplicável)
+- `docs/business-context/MESSAGING_FRAMEWORK.md`
+- `docs/business-context/CUSTOMER_COMMUNICATION.md`
+
+Se um projeto "existente" acabar tendo pouco ou nada pra minerar (um esqueleto vazio, uma ideia pré-lançamento), os dois comandos de bootstrap caem automaticamente pro modo Collection — igual a um projeto novo.
+
+**Passo 6: aqueça a sessão e comece o pipeline**
+```bash
+claude "/warm-up"
+```
+Daqui pra frente, o CoDriDe trata um projeto existente exatamente como um novo — `/product:collect`, `/engineer:context` e o resto do pipeline usam os master docs recém-gerados.
+
 ---
 
 ## 💡 Conceitos Centrais

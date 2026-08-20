@@ -104,6 +104,63 @@ claude "/engineer:pr"
 
 You don't need every piece on day one — `/engineer:context` and `/engineer:architecture` work fine without master docs or a discovery briefing; they just have less context to draw on.
 
+### Onboarding an Existing Project
+
+The 5-step setup above works for any project, but an existing codebase already has signal worth mining — code, README, issues, ADRs — so the bootstrap commands default to analyzing that material first and only interview you to fill the gaps. This is **Analysis mode**; a brand-new/empty project instead runs **Collection mode**, a from-scratch interview (see the [FAQ](#-faq)).
+
+**Steps 1-3: same as the 5-step setup** — copy `.claude/` in, run `/engineer:doctor`, run `/engineer:discover`.
+
+`/engineer:discover` is the fast, automatic pass over the codebase: no interview, safe to re-run incrementally as the code evolves. It writes:
+- `docs/technical-context/project-briefing.md` — master index + summary
+- `docs/technical-context/briefing/critical-rules.md` — the 3-5 most critical rules, copied in full into every future `context.md`
+- `docs/technical-context/briefing/adrs-summary.md` — indexed ADR summaries (created with a "none yet" note if the project has no ADRs)
+- `docs/technical-context/briefing/backend-conventions.md` — folder structure, naming, code patterns
+- `docs/technical-context/briefing/tech-stack.md` — runtime, framework, database/ORM, key libraries
+
+**Step 4 (optional, deeper): the full technical master doc**
+```bash
+claude "/bootstrap:tech-docs <links to repo/docs, if any>"
+```
+Heavier than `/engineer:discover` — it interviews you (~10 questions) about architecture decisions, workflows, and known challenges, then writes the complete technical-context architecture:
+- `docs/technical-context/index.md` — master index
+- `docs/technical-context/project_charter.md` — vision, success criteria, scope, stakeholders
+- `docs/technical-context/adr/` — draft ADRs for decisions it found in the code but that were never written down
+- `docs/technical-context/CLAUDE.meta.md` — AI development guide (code style, gotchas, patterns)
+- `docs/technical-context/CODEBASE_GUIDE.md` — annotated directory structure, data flow, integrations
+- `docs/technical-context/BUSINESS_LOGIC.md` — domain rules and workflows (if complex domain logic exists)
+- `docs/technical-context/API_SPECIFICATION.md` — endpoints, auth, data models (if APIs exist)
+- `docs/technical-context/CONTRIBUTING.md` — branch strategy, review process, testing requirements
+- `docs/technical-context/TROUBLESHOOTING.md` — common issues and debugging approaches
+- `docs/technical-context/ARCHITECTURE_CHALLENGES.md` — known pain points and what the team wants to improve
+
+Run `/engineer:discover` alone if you just want `context.md` to have something to draw on quickly; run `/bootstrap:tech-docs` when you want the full "DNA" document written down. Running both is fine — `/engineer:doctor` reports both shapes present, it doesn't treat it as a conflict.
+
+**Step 5: the business side**
+```bash
+claude "/bootstrap:business-docs <links to the product's docs/tickets, if you have them>"
+```
+With existing material to mine (a README with a real product description, GitHub issues, marketing pages), this runs in Analysis mode: it researches the product, market, and customers, asks a round of clarifying questions, then writes:
+- `docs/business-context/index.md` — master index
+- `docs/business-context/CUSTOMER_PERSONAS.md`
+- `docs/business-context/CUSTOMER_JOURNEY.md`
+- `docs/business-context/VOICE_OF_CUSTOMER.md`
+- `docs/business-context/PRODUCT_STRATEGY.md`
+- `docs/business-context/features/` — one file per existing feature
+- `docs/business-context/PRODUCT_METRICS.md`
+- `docs/business-context/COMPETITIVE_LANDSCAPE.md`
+- `docs/business-context/INDUSTRY_TRENDS.md`
+- `docs/business-context/SALES_PROCESS.md` (if relevant)
+- `docs/business-context/MESSAGING_FRAMEWORK.md`
+- `docs/business-context/CUSTOMER_COMMUNICATION.md`
+
+If an "existing" repo turns out to have little or nothing to mine (a bare scaffold, a pre-launch idea), both bootstrap commands fall back to Collection mode automatically — same as a brand-new project.
+
+**Step 6: warm up and start the pipeline**
+```bash
+claude "/warm-up"
+```
+From here, CoDriDe treats an existing project exactly like a new one — `/product:collect`, `/engineer:context`, and the rest of the pipeline all draw on the master docs just generated.
+
 ---
 
 ## 💡 Core Concepts
