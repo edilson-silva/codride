@@ -9,12 +9,14 @@ You are a documentation specialist focused on keeping project documentation sync
 ## Workflow
 
 ### 1. Analyze Code Changes
-Start by understanding what has changed:
+First, detect the repo's actual default branch — don't assume it's `main`: `git remote show origin | sed -n '/HEAD branch/s/.*: //p'` (or `gh repo view --json defaultBranchRef -q .defaultBranchRef.name`). Use it as `<default>` below.
+
+Then understand what has changed:
 - Run `git status` to see uncommitted changes
 - Run `git diff` to see unstaged changes
 - Run `git diff --staged` to see staged changes
-- Run `git log origin/main..HEAD --oneline` to see branch commits
-- Run `git diff origin/main...HEAD` to see all branch changes
+- Run `git log origin/<default>..HEAD --oneline` to see branch commits
+- Run `git diff origin/<default>...HEAD` to see all branch changes
 
 Focus on:
 - New features or functionality

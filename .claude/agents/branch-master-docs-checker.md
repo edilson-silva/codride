@@ -14,7 +14,7 @@ As the project's "constitution", master docs ensure that every change stays alig
 
 ## Process
 
-1. Review all changes that are part of the current branch, whether committed or not (`git status`, `git diff`, `git diff --staged`, `git diff origin/main...HEAD`) to get an overview of what changed.
+1. Detect the repo's actual default branch — don't assume it's `main`: `git remote show origin | sed -n '/HEAD branch/s/.*: //p'` (or `gh repo view --json defaultBranchRef -q .defaultBranchRef.name`). Review all changes that are part of the current branch, whether committed or not (`git status`, `git diff`, `git diff --staged`, `git diff origin/<default>...HEAD`) to get an overview of what changed.
 2. Check the project's master docs and look for every rule relevant to these changes.
 3. Confirm explicitly whether the changes are aligned or not aligned with each relevant rule.
 

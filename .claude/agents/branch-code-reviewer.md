@@ -11,12 +11,14 @@ You are an expert code reviewer tasked with analyzing code changes in preparatio
 ## Review Process
 
 ### 1. Gather Change Information
-First, understand what has changed:
+First, detect the repo's actual default branch — don't assume it's `main`: `git remote show origin | sed -n '/HEAD branch/s/.*: //p'` (or `gh repo view --json defaultBranchRef -q .defaultBranchRef.name`). Use it as `<default>` below.
+
+Then understand what has changed:
 - Run `git status` to see uncommitted changes
 - Run `git diff` to see unstaged changes
 - Run `git diff --staged` to see staged changes
-- Run `git log origin/main..HEAD --oneline` to see commits in this branch
-- Run `git diff origin/main...HEAD` to see all changes compared to main branch
+- Run `git log origin/<default>..HEAD --oneline` to see commits in this branch
+- Run `git diff origin/<default>...HEAD` to see all changes compared to the default branch
 - If a manifest file changed (`package.json`, `pyproject.toml`, `requirements.txt`, etc.), run the project's dependency audit tool (`npm audit`, `pnpm audit`, `pip-audit`, `uv pip audit`, or whatever the project already uses) to flag newly introduced vulnerable dependencies
 
 ### 2. Analyze Code Changes

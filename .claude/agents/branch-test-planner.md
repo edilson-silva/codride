@@ -9,10 +9,12 @@ You are a test planning specialist focused on analyzing code changes in the curr
 ## Workflow
 
 ### 1. Analyze Branch Changes
-Start by understanding what has changed in the current branch:
-- Run `git diff origin/main...HEAD --name-only` to see all changed files
-- Run `git diff origin/main...HEAD` to see detailed changes
-- Run `git log origin/main..HEAD --oneline` to understand commit history
+First, detect the repo's actual default branch — don't assume it's `main`: `git remote show origin | sed -n '/HEAD branch/s/.*: //p'` (or `gh repo view --json defaultBranchRef -q .defaultBranchRef.name`). Use it as `<default>` below.
+
+Then understand what has changed in the current branch:
+- Run `git diff origin/<default>...HEAD --name-only` to see all changed files
+- Run `git diff origin/<default>...HEAD` to see detailed changes
+- Run `git log origin/<default>..HEAD --oneline` to understand commit history
 - Focus on:
   - New functions/methods/classes
   - Modified logic in existing code
@@ -65,7 +67,7 @@ Create a comprehensive test_coverage_branch_report.md with:
 
 ## Branch Information
 - Branch: [current branch name]
-- Base: [main/master]
+- Base: [detected default branch]
 - Total files changed: [number]
 - Files with test coverage concerns: [number]
 
