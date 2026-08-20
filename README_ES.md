@@ -241,7 +241,7 @@ Escanea la base de código una vez (o de forma incremental) y escribe `docs/tech
 Genera la arquitectura de master docs multi-archivo desde cero. Úsalo una vez por proyecto, y luego mantenlo a mano (o vía `/engineer:sync-docs`).
 
 #### `/bootstrap:tech-docs`
-Genera la arquitectura completa de contexto técnico (carta del proyecto, ADR, guía de desarrollo para IA, navegación de la base de código, lógica de negocio, especificación de API, guía de contribución, resolución de problemas) bajo `docs/technical-context/`. Analiza la base de código local por sí solo — los argumentos son opcionales, solo necesarios para apuntarlo a material fuera de este repo.
+Genera la arquitectura completa de contexto técnico (carta del proyecto, ADR, guía de desarrollo para IA, navegación de la base de código, lógica de negocio, especificación de API, guía de contribución, resolución de problemas) bajo `docs/technical-context/`. Funciona de dos maneras, la misma división que `/bootstrap:business-docs`: el **modo análisis** analiza la base de código local por sí solo (los argumentos solo añaden material fuera de este repo); el **modo recolección** realiza una entrevista de arquitectura en su lugar, para un proyecto nuevo sin código todavía — cada decisión planificada vuelve marcada explícitamente como planificada, no implementada.
 
 - **Uso**: `/bootstrap:tech-docs`, o `/bootstrap:tech-docs <enlaces a repos/archivos a analizar>` para incluir material externo
 
@@ -598,7 +598,7 @@ claude "/engineer:pr"
 R: Claude Code sin CoDriDe aún escribe buen código, pero cada sesión vuelve a derivar las convenciones del proyecto desde cero, y no hay nada duradero contra qué verificar un cambio. CoDriDe agrega master docs (una fuente de verdad persistente), una convención de elemento de trabajo `type/slug` (para que el trabajo interrumpido se reanude en lugar de reiniciar), y un conjunto fijo de verificaciones (`/engineer:pre-pr`) que se ejecutan de la misma manera cada vez.
 
 ### P: Mi proyecto todavía no tiene master docs — ¿puedo usar esto de todos modos?
-R: Sí. `/engineer:context` y `/engineer:architecture` funcionan sin ellos; simplemente tienen menos contexto del que valerse. Ejecuta `/bootstrap:business-docs` y `/bootstrap:tech-docs` cuando estés listo — `/bootstrap:business-docs` incluso funciona sin nada que analizar todavía, mediante su modo de recolección guiado por entrevista.
+R: Sí. `/engineer:context` y `/engineer:architecture` funcionan sin ellos; simplemente tienen menos contexto del que valerse. Ejecuta `/bootstrap:business-docs` y `/bootstrap:tech-docs` cuando estés listo — ambos funcionan sin nada que analizar todavía, mediante sus modos de recolección guiados por entrevista.
 
 ### P: ¿Tengo que usar GitHub Issues?
 R: El pipeline de producto/ingeniería está construido en torno a `gh`, y `github-project-sync` es uno de los 8 agentes centrales. Si tu proyecto usa otro sistema de seguimiento, necesitarías un agente `project-*` (vía `/meta:create-agent`) para reemplazar el rol de `github-project-sync` — el resto del pipeline (master docs, elementos de trabajo, ciclo BDD/TDD) no depende de GitHub específicamente.
