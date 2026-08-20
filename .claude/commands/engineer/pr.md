@@ -10,7 +10,7 @@ You're now asked to open a PR. Follow these steps carefully:
 
 3. Move the associated GitHub issue to "in review": `gh issue edit <number> --add-label "status:in-review" --remove-label "status:in-progress"` (adjust label names to match the repo's existing labels).
 
-4. Open a Pull Request with the execution details.
+4. Open a Pull Request with the execution details. Include a `Closes #<number>` line in the description so the issue auto-closes on merge, and comment the PR link back on the issue: `gh issue comment <number> --body "PR opened for review: #<pr-number>"`.
 
    Important: don't mention any AI- or Claude-related tooling in the PR description.
 

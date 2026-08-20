@@ -75,6 +75,8 @@ For each `.md` file found in the ADR folder:
 
 Invoke the `adr-compliance-checker` agent against the current codebase, now that the ADRs are consolidated. This matters most when onboarding an existing project — ADRs are often written after the fact, once a convention has already drifted, so this is the first chance to see where the code and the documented decisions disagree.
 
+If Phase 2.0 below determines this is a monorepo, don't run this as a single generic pass — invoke `adr-compliance-checker` once per service found in 2.0, the same way Phases 2.1-2.4 do, since a convention violation in `apps/api/` may not apply to `apps/worker/` at all.
+
 Advisory only: collect the findings for the Phase 4.2 report; don't block Phase 2-4 on them, and don't fix anything automatically.
 
 ---
@@ -184,7 +186,7 @@ Runtime/language version, web framework, database + ORM, key libraries, and impo
 - Critical rules: X
 - Backend framework(s): [name, or one per service in monorepo mode]
 - Database/ORM: [name]
-- ADR compliance (adr-compliance-checker): [no ADRs to check / N violations found, listed below / clean]
+- ADR compliance (adr-compliance-checker): [no ADRs to check / N violations found, listed below / clean — one line per service in monorepo mode]
 
 [If violations were found, list each: which ADR, where in the code, and the suggested fix.]
 

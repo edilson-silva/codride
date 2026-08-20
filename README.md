@@ -119,7 +119,7 @@ The 5-step setup above works for any project, but an existing codebase already h
 
 **Step 4 (optional, deeper): the full technical master doc**
 ```bash
-claude "/bootstrap:tech-docs <links to repo/docs, if any>"
+claude "/bootstrap:tech-docs [links to repo/docs, if any]"
 ```
 Heavier than `/engineer:discover` — it interviews you (~10 questions) about architecture decisions, workflows, and known challenges, then writes the complete technical-context architecture:
 - `docs/technical-context/index.md` — master index
@@ -137,7 +137,7 @@ Run `/engineer:discover` alone if you just want `context.md` to have something t
 
 **Step 5: the business side**
 ```bash
-claude "/bootstrap:business-docs <links to the product's docs/tickets, if you have them>"
+claude "/bootstrap:business-docs [links to the product's docs/tickets, if you have them]"
 ```
 With existing material to mine (a README with a real product description, GitHub issues, marketing pages), this runs in Analysis mode: it researches the product, market, and customers, asks a round of clarifying questions, then writes:
 - `docs/business-context/index.md` — master index

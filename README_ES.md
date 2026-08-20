@@ -119,7 +119,7 @@ La configuración en 5 pasos de arriba funciona para cualquier proyecto, pero un
 
 **Paso 4 (opcional, más profundo): el master doc técnico completo**
 ```bash
-claude "/bootstrap:tech-docs <enlaces al repo/docs, si los hay>"
+claude "/bootstrap:tech-docs [enlaces al repo/docs, si los hay]"
 ```
 Más pesado que `/engineer:discover` — te entrevista (~10 preguntas) sobre decisiones de arquitectura, flujos de trabajo y desafíos conocidos, y luego escribe la arquitectura técnica completa:
 - `docs/technical-context/index.md` — índice maestro
@@ -137,7 +137,7 @@ Ejecuta solo `/engineer:discover` si solo quieres que `context.md` tenga algo de
 
 **Paso 5: el lado de negocio**
 ```bash
-claude "/bootstrap:business-docs <enlaces a docs/tickets del producto, si los hay>"
+claude "/bootstrap:business-docs [enlaces a docs/tickets del producto, si los hay]"
 ```
 Con material existente para extraer (un README con una descripción real del producto, issues de GitHub, páginas de marketing), esto se ejecuta en modo Analysis: investiga el producto, el mercado y los clientes, hace una ronda de preguntas de aclaración, y luego escribe:
 - `docs/business-context/index.md` — índice maestro

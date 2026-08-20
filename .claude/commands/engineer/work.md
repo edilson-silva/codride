@@ -41,15 +41,10 @@ To work on this, you should:
   gh issue comment <number> --body "✅ Phase X complete - [summary of what was done]"
   ```
 
-### 3. When opening a PR
+### 3. When the PR merges
 
-1. Move the issue to review: `gh issue edit <number> --add-label "status:in-review" --remove-label "status:in-progress"`.
-2. Comment the PR link on the issue: `gh issue comment <number> --body "PR opened for review: #<pr-number>"`.
-3. Update `plan.md` with the PR link.
+`/engineer:work` never opens the PR itself — that's `/engineer:pr`'s job, including moving the issue to "in review" and commenting the PR link. Once that PR has merged:
 
-### 4. When done
-
-After the PR merges:
 1. Close the issue: `gh issue close <number> --comment "Shipped in #<pr-number>."`
 2. If your workflow doesn't auto-close via a "Closes #<number>" line in the PR description, do it explicitly here.
 

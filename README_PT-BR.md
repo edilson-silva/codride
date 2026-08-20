@@ -119,7 +119,7 @@ O `/engineer:discover` é a passada rápida e automática pela base de código: 
 
 **Passo 4 (opcional, mais profundo): o master doc técnico completo**
 ```bash
-claude "/bootstrap:tech-docs <links pro repo/docs, se houver>"
+claude "/bootstrap:tech-docs [links pro repo/docs, se houver]"
 ```
 Mais pesado que o `/engineer:discover` — ele te entrevista (~10 perguntas) sobre decisões de arquitetura, fluxos de trabalho e desafios conhecidos, e então escreve a arquitetura técnica completa:
 - `docs/technical-context/index.md` — índice mestre
@@ -137,7 +137,7 @@ Rode só o `/engineer:discover` se você só quer que o `context.md` tenha algo 
 
 **Passo 5: o lado de negócio**
 ```bash
-claude "/bootstrap:business-docs <links pra docs/tickets do produto, se houver>"
+claude "/bootstrap:business-docs [links pra docs/tickets do produto, se houver]"
 ```
 Com material existente pra minerar (um README com descrição real do produto, issues no GitHub, páginas de marketing), isso roda em modo Analysis: pesquisa o produto, o mercado e os clientes, faz uma rodada de perguntas de esclarecimento, e então escreve:
 - `docs/business-context/index.md` — índice mestre
