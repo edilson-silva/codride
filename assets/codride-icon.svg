@@ -1,28 +1,168 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="196.5" height="196.5" viewBox="15.5 26 196.5 196.5">
-  <defs>
-    <linearGradient id="frontGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#312E81"/>
-      <stop offset="100%" stop-color="#1E1B4B"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="170"
+   height="165"
+   viewBox="15.5 26 170 165"
+   version="1.1"
+   id="svg7"
+   sodipodi:docname="codride-icon.svg"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   inkscape:export-filename="codride-icon.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="3.1414973"
+     inkscape:cx="101.06646"
+     inkscape:cy="113.48092"
+     inkscape:window-width="2560"
+     inkscape:window-height="1022"
+     inkscape:window-x="0"
+     inkscape:window-y="30"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg7" />
+  <defs
+     id="defs4">
+    <linearGradient
+       id="frontGrad"
+       x1="-60"
+       y1="-60"
+       x2="60"
+       y2="60"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(144.17799,91.108231)">
+      <stop
+         offset="0"
+         stop-color="#312E81"
+         id="stop1"
+         style="stop-color:#6366f1;stop-opacity:1;" />
+      <stop
+         offset="1"
+         stop-color="#1E1B4B"
+         id="stop2"
+         style="stop-color:#312e81;stop-opacity:1;" />
     </linearGradient>
-    <linearGradient id="arrowGrad" x1="0%" y1="100%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#F59E0B"/>
-      <stop offset="100%" stop-color="#FBBF24"/>
+    <linearGradient
+       id="arrowGrad"
+       x1="0"
+       y1="1"
+       x2="1"
+       y2="0">
+      <stop
+         offset="0%"
+         stop-color="#F59E0B"
+         id="stop3" />
+      <stop
+         offset="100%"
+         stop-color="#FBBF24"
+         id="stop4" />
     </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#arrowGrad"
+       id="linearGradient7"
+       x1="37"
+       y1="201"
+       x2="55"
+       y2="183"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#arrowGrad"
+       id="linearGradient8"
+       x1="40.653526"
+       y1="192.86765"
+       x2="179.59596"
+       y2="53.925209"
+       gradientTransform="scale(0.97162541,1.0292032)"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#arrowGrad"
+       id="linearGradient9"
+       x1="139.00031"
+       y1="92.999695"
+       x2="184.99992"
+       y2="47.00008"
+       gradientUnits="userSpaceOnUse" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#arrowGrad"
+       id="linearGradient10"
+       x1="139.00031"
+       y1="92.999695"
+       x2="184.99992"
+       y2="47.00008"
+       gradientUnits="userSpaceOnUse" />
   </defs>
-  <g transform="translate(0,0)">
-    <rect x="-58" y="-58" width="116" height="116" rx="26"
-          fill="#C7D2FE" opacity="0.55"
-          transform="translate(96,140) rotate(-13)"/>
-    <rect x="-58" y="-58" width="116" height="116" rx="26"
-          fill="#818CF8" opacity="0.8"
-          transform="translate(110,126) rotate(-4)"/>
-    <rect x="-60" y="-60" width="120" height="120" rx="27"
-          fill="url(#frontGrad)"
-          transform="translate(132,108) rotate(7)"/>
-    <circle cx="46" cy="192" r="9" fill="url(#arrowGrad)"/>
-    <path d="M 46 192 L 168 62"
-          stroke="url(#arrowGrad)" stroke-width="13" stroke-linecap="round" fill="none"/>
-    <path d="M 142 58 L 182 50 L 174 90 Z"
-          fill="url(#arrowGrad)" stroke="url(#arrowGrad)" stroke-width="6"
-          stroke-linejoin="round" stroke-linecap="round"/>
-  </g></svg>
+  <g
+     id="g10"
+     transform="translate(-13.195457,-15.804546)">
+    <rect
+       x="4.0463781"
+       y="100.00711"
+       width="116"
+       height="116"
+       rx="26"
+       fill="#c7d2fe"
+       opacity="0.55"
+       transform="rotate(-13)"
+       id="rect4" />
+    <rect
+       x="42.942726"
+       y="75.366287"
+       width="116"
+       height="116"
+       rx="26"
+       fill="#818cf8"
+       opacity="0.8"
+       transform="rotate(-4)"
+       id="rect5" />
+    <rect
+       x="84.177986"
+       y="31.108231"
+       width="120"
+       height="120"
+       rx="27"
+       fill="url(#frontGrad)"
+       transform="rotate(7)"
+       id="rect6"
+       style="fill:url(#frontGrad)" />
+    <circle
+       cx="46"
+       cy="192"
+       r="9"
+       fill="url(#arrowGrad)"
+       id="circle6"
+       style="fill:url(#linearGradient7)" />
+    <path
+       d="M 46,192 168,62"
+       stroke="url(#arrowGrad)"
+       stroke-width="13"
+       stroke-linecap="round"
+       fill="none"
+       id="path6"
+       style="stroke:url(#linearGradient8)" />
+    <path
+       d="m 142,58 40,-8 -8,40 z"
+       fill="url(#arrowGrad)"
+       stroke="url(#arrowGrad)"
+       stroke-width="6"
+       stroke-linejoin="round"
+       stroke-linecap="round"
+       id="path7"
+       style="fill:url(#linearGradient9);stroke:url(#linearGradient10)" />
+  </g>
+</svg>
