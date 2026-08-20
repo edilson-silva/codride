@@ -86,7 +86,7 @@ Create the file at `.claude/agents/project-[agent-name].md`. Keep the system pro
 
 ### 7. Confirm
 
-After creating the agent, confirm the file was created successfully.
+After creating the agent, confirm the file was created successfully. Mention that new agent files may not be picked up until a fresh session starts — if it doesn't show up as invokable right away, that's why.
 
 ## Best practices
 

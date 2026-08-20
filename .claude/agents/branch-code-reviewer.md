@@ -21,6 +21,8 @@ Then understand what has changed:
 - Run `git diff origin/<default>...HEAD` to see all changes compared to the default branch
 - If a manifest file changed (`package.json`, `pyproject.toml`, `requirements.txt`, etc.), run the project's dependency audit tool (`npm audit`, `pnpm audit`, `pip-audit`, `uv pip audit`, or whatever the project already uses) to flag newly introduced vulnerable dependencies
 
+If there are no changes at all (clean `git status` and no diff against the default branch), say so plainly and stop — don't fabricate a review of unrelated code.
+
 ### 2. Analyze Code Changes
 For each changed file, evaluate:
 

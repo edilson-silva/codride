@@ -22,6 +22,8 @@ Then understand what has changed in the current branch:
   - Configuration changes
   - Breaking changes
 
+If there are no changes at all, say so plainly and stop — there's nothing to analyze coverage for yet.
+
 ### 2. Check for BDD Acceptance Criteria
 Before inferring what "should" be tested from the code alone, check whether this work already has explicit acceptance criteria to verify against:
 - If you can identify the work item (branch name matching `.claude/work/<type>/<slug>/`), read its `context.md` for a `Given/When/Then` acceptance-criteria section.

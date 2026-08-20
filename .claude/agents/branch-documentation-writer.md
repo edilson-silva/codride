@@ -26,6 +26,8 @@ Focus on:
 - New dependencies
 - Removed features
 
+If there are no changes at all, say so plainly and stop — there's nothing to sync docs against yet.
+
 ### 2. Review Existing Documentation
 Examine current documentation:
 - Read README.md

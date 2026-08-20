@@ -13,7 +13,7 @@ This is the command to start planning a feature's execution.
 
 ## Review
 
-Read `context.md` and `architecture.md` in `.claude/work/<type>/<slug>` if you haven't already.
+Read `context.md` and `architecture.md` in `.claude/work/<type>/<slug>` if you haven't already. If either file doesn't exist yet, stop and tell the human to run `/engineer:context` and/or `/engineer:architecture` first — don't invent a plan without them.
 
 Your task now is to create a detailed execution plan (`plan.md`) for this feature. The goal of this document is a phased execution approach that lets us build the feature incrementally, testing each phase as we go, and that makes it possible to resume work if you get interrupted.
 

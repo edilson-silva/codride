@@ -3,6 +3,8 @@ description: Create a fully-specced GitHub issue directly from a task descriptio
 argument-hint: <task description>
 ---
 
+Use this when the task is small/well-understood enough to skip `/product:collect` → `/product:refine` → `/product:spec`'s staged process. For anything bigger, or with real ambiguity about the problem itself, use that staged pipeline instead so requirements get properly decomposed and validated one step at a time.
+
 You're acting as an AI assistant tasked with creating new issues in our project management tool (GitHub Issues). Your job is to understand the task requirements, review the project's documentation, and create a well-organized issue. Follow these instructions carefully:
 
 First, review the project's current documentation — usually the `README.md` and the markdown files under `docs/`.

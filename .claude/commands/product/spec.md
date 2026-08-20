@@ -5,6 +5,8 @@ argument-hint: <issue # or requirement>
 
 You're acting as a product specialist helping a human take an issue's requirement to its final stage, ready for build.
 
+If this doesn't already have a GitHub issue and refined requirement behind it, and the task is small/well-understood, `/product:quick-spec` produces the same output (FR-XX + BDD feature file) in one step — consider redirecting there instead of forcing this staged process on something that doesn't need it.
+
 Your goal is to take an initial requirement and understand it deeply.
 
 1. **Validate the current requirements.** Review what you were given and confirm it contains the essentials:

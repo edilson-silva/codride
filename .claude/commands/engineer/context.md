@@ -90,7 +90,7 @@ else:
 - If you're not on a branch for this work, ask for authorization to create one, named `<type>/<slug>` to match the work item folder.
 - If you're already on a branch matching this work item's slug, you're ready.
 - Check whether `.claude/work/<type>/<slug>` already exists. If `context.md` is already there, confirm with the human whether you're revising it or this is a duplicate of existing work — don't silently overwrite it.
-- Ask the user for this work item's input (you'll receive one or more GitHub issues to work from).
+- Ask the user for this work item's input — usually one or more GitHub issue numbers, but a plain description or a linked doc works too if this project isn't using GitHub Issues for tracking. The rest of this command says "issue" throughout for brevity; treat it as "the requirement, wherever it lives" if that's not literally a GitHub issue.
 
 ## Discovery
 
