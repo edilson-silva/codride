@@ -75,6 +75,13 @@ For each `.md` file found in the ADR folder:
 
 ## Phase 2: Backend architecture analysis (always runs)
 
+### 2.0 Detect single-project vs. monorepo
+
+Check for monorepo signals at the root: a `package.json` with a `workspaces` field, `pnpm-workspace.yaml`, `lerna.json`, `nx.json`, `turbo.json`, or multiple independent manifest files under `apps/*/` or `packages/*/`.
+
+- **If none of these exist**: single project. Continue with 2.1 below as normal.
+- **If they do**: this is a monorepo. List every workspace/app/package that has its own manifest file — don't just take the first match and stop. Run 2.1–2.4 **for each one that looks like a backend/service** (has its own manifest and server-side code, not just a shared UI-component or config package). Keep each service's findings separate; don't merge them into one generic answer. A monorepo with `apps/api/`, `apps/worker/`, and `packages/shared/` gets three sub-analyses, not one.
+
 ### 2.1 Detect the backend / main codebase
 
 Look for common paths:
@@ -84,6 +91,8 @@ backend_paths = [
   "packages/backend/", "src/backend/", "src/"
 ]
 ```
+
+In monorepo mode, apply this per workspace found in 2.0 instead of at the repo root.
 
 ### 2.2 Map the folder structure
 
@@ -97,7 +106,7 @@ For the codebase found, scan for:
 
 ### 2.3 Identify conventions
 
-**Shared type/enum location**: find where the majority of enum/type definitions live; treat it as a convention if >80% share the same location.
+**Shared type/enum location**: find where the majority of enum/type definitions live; treat it as a convention if >80% share the same location. In monorepo mode, also check whether a `packages/shared/`-style package is where cross-service types actually live — that's itself a convention worth recording.
 
 **Architectural patterns**: repository pattern? Service layer? MVC? — infer from which folders coexist.
 
@@ -105,7 +114,7 @@ For the codebase found, scan for:
 
 ### 2.4 Detect the tech stack
 
-Read the manifest file (`package.json`, `pyproject.toml`, etc.):
+Read the manifest file (`package.json`, `pyproject.toml`, etc.) — per service, in monorepo mode, since different services in the same monorepo commonly run different stacks:
 - Web framework (Express, Fastify, NestJS, Django, FastAPI, Flask, ...)
 - Database/ORM (Prisma, TypeORM, Drizzle, SQLAlchemy, Mongoose, ...)
 - Validation library (Zod, Joi, Pydantic, class-validator, ...)
@@ -136,11 +145,11 @@ If ADRs exist: an index by category, each ADR summarized with title, status, imp
 
 ### 3.5 `briefing/backend-conventions.md`
 
-Folder structure (ASCII tree), file/class/method naming, code patterns (controller/service/repository or equivalent), and a couple of representative code examples. Target size: ~150 lines.
+Folder structure (ASCII tree), file/class/method naming, code patterns (controller/service/repository or equivalent), and a couple of representative code examples. In monorepo mode, use one subsection per service instead of collapsing them into a single generic answer — a convention that holds in `apps/api/` may not hold in `apps/worker/`. Target size: ~150 lines (scales with the number of services).
 
 ### 3.6 `briefing/tech-stack.md`
 
-Runtime/language version, web framework, database + ORM, key libraries, and important version constraints. Target size: ~100 lines.
+Runtime/language version, web framework, database + ORM, key libraries, and important version constraints. In monorepo mode, one subsection per service, plus a line noting which package manager/workspace tool ties them together (pnpm workspaces, Nx, Turborepo, Lerna). Target size: ~100 lines (scales with the number of services).
 
 ---
 
@@ -167,7 +176,7 @@ Runtime/language version, web framework, database + ORM, key libraries, and impo
 📊 Summary:
 - ADRs analyzed: X
 - Critical rules: X
-- Backend framework: [name]
+- Backend framework(s): [name, or one per service in monorepo mode]
 - Database/ORM: [name]
 
 💡 Next steps:
