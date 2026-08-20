@@ -123,10 +123,11 @@ La gestión del proyecto pasa íntegramente por **GitHub Issues** vía la CLI de
 
 CoDriDe no detecta la complejidad automáticamente — tú eliges el punto de entrada, y esa elección es barata de "equivocar" porque ambas vías son solo comandos:
 
-```
-Cambio pequeño y bien entendido  →  directo a la vía de Ingeniería
-Necesita una especificación primero  →  Vía de Producto  →  Vía de Ingeniería
-Decisión abierta                  →  /product:brainstorm  →  a donde lleve
+```mermaid
+flowchart LR
+    A[Cambio a realizar] -->|Pequeño, bien entendido| B[Vía de Ingeniería]
+    A -->|Necesita una especificación primero| C[Vía de Producto] --> B
+    A -->|Decisión abierta| D["/product:brainstorm"] --> E[a donde lleve]
 ```
 
 Una feature típicamente fluye **de izquierda a derecha**: una idea se recolecta y refina del lado de producto, y luego se pasa al lado de ingeniería una vez que hay una especificación clara contra la cual construir.
@@ -384,39 +385,59 @@ El ciclo central de CoDriDe no necesita nada más que `gh` — no se requiere ni
 
 ### Diagrama del Pipeline
 
-```
-┌──────────┐     ┌────────────────────────────┐     ┌─────────────────────────────────┐     ┌────────────┐     ┌──────────┐
-│ /warm-up │ ──▶ │        Vía de producto        │ ──▶ │        Vía de ingeniería           │ ──▶ │ /engineer: │ ──▶ │/engineer:│
-│          │     │ collect→refine→validate→spec │     │ context→architecture→plan→work    │     │  pre-pr    │     │    pr    │
-└──────────┘     └────────────────────────────┘     └─────────────────────────────────┘     └────────────┘     └──────────┘
-                    escribe docs/business-context/     escribe .claude/work/<type>/<slug>/        4 verificaciones,  commit,
-                    features/<slug>.md (FR-XX + BDD)    context.md → architecture.md → plan.md   2 paralelas +      abre PR,
-                                                                                                    2 secuenciales    mueve issue
+```mermaid
+flowchart LR
+    A["/warm-up"] --> B
+
+    subgraph B["Vía de Producto"]
+        direction LR
+        B1[collect] --> B2[refine] --> B3[validate] --> B4[spec]
+    end
+
+    B --> C
+
+    subgraph C["Vía de Ingeniería"]
+        direction LR
+        C1[context] --> C2[architecture] --> C3[plan] --> C4[work]
+    end
+
+    C --> D["/engineer:pre-pr<br/>4 verificaciones, 2 paralelas + 2 secuenciales"]
+    D --> E["/engineer:pr<br/>commit, abre PR, mueve issue"]
+
+    B -.escribe.-> BN["docs/business-context/features/&lt;slug&gt;.md<br/>(FR-XX + BDD)"]
+    C -.escribe.-> CN[".claude/work/&lt;type&gt;/&lt;slug&gt;/<br/>context.md → architecture.md → plan.md"]
 ```
 
 ### El Ciclo BDD → TDD → Coverage
 
 Los criterios de aceptación se escriben una vez y se consumen tres veces, sin volver a escribirlos:
 
-```
-/product:spec escribe Given/When/Then por FR-XX
-        │
-        ▼
-/engineer:context los lleva textualmente a context.md
-        │
-        ▼
-/engineer:work implementa test-first contra ellos (red → green → refactor)
-        │
-        ▼
-/engineer:coverage (branch-test-planner) verifica que cada escenario tenga una prueba correspondiente
+```mermaid
+flowchart TD
+    A["/product:spec escribe Given/When/Then por FR-XX"]
+    B["/engineer:context los lleva textualmente a context.md"]
+    C["/engineer:work implementa test-first contra ellos (red → green → refactor)"]
+    D["/engineer:coverage (branch-test-planner) verifica que cada escenario tenga una prueba correspondiente"]
+
+    A --> B --> C --> D
 ```
 
 ### Orden de Ejecución de `/engineer:pre-pr`
 
-```
-Paso 1 (paralelo, solo lectura)      Paso 2 (secuencial, escribe)
-  /engineer:validate  ─┐               /engineer:sync-docs
-  /engineer:review     ─┘  ────▶       /engineer:coverage
+```mermaid
+flowchart LR
+    subgraph Step1["Paso 1 (paralelo, solo lectura)"]
+        direction TB
+        V["/engineer:validate"]
+        R["/engineer:review"]
+    end
+
+    subgraph Step2["Paso 2 (secuencial, escribe)"]
+        direction TB
+        S["/engineer:sync-docs"] --> Co["/engineer:coverage"]
+    end
+
+    Step1 --> Step2
 ```
 
 Validate y review no dependen de la salida del otro y no tocan nada en disco, así que se ejecutan de forma concurrente. Sync-docs y coverage ambos escriben, así que se ejecutan uno después del otro, tras terminar el par de solo lectura.

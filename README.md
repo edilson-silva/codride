@@ -123,10 +123,11 @@ Project management runs through **GitHub Issues** via the `gh` CLI — no separa
 
 CoDriDe doesn't auto-detect complexity — you choose the entry point, and that choice is cheap to get "wrong" because both tracks are just commands:
 
-```
-Small, well-understood change  →  straight to the Engineering track
-Needs a spec first             →  Product track  →  Engineering track
-Open-ended decision            →  /product:brainstorm  →  wherever it leads
+```mermaid
+flowchart LR
+    A[Change to make] -->|Small, well-understood| B[Engineering track]
+    A -->|Needs a spec first| C[Product track] --> B
+    A -->|Open-ended decision| D["/product:brainstorm"] --> E[wherever it leads]
 ```
 
 A feature typically flows **left to right**: an idea gets collected and refined on the product side, then handed to the engineering side once there's a clear spec to build against.
@@ -384,39 +385,59 @@ CoDriDe's core loop needs nothing beyond `gh` — no MCP server is required. Two
 
 ### Pipeline Diagram
 
-```
-┌──────────┐     ┌────────────────────────────┐     ┌─────────────────────────────────┐     ┌────────────┐     ┌──────────┐
-│ /warm-up │ ──▶ │        Product track         │ ──▶ │        Engineering track          │ ──▶ │ /engineer: │ ──▶ │/engineer:│
-│          │     │ collect→refine→validate→spec │     │ context→architecture→plan→work    │     │  pre-pr    │     │    pr    │
-└──────────┘     └────────────────────────────┘     └─────────────────────────────────┘     └────────────┘     └──────────┘
-                    writes docs/business-context/       writes .claude/work/<type>/<slug>/        4 checks,          commits,
-                    features/<slug>.md (FR-XX + BDD)     context.md → architecture.md → plan.md   2 parallel +       opens PR,
-                                                                                                     2 sequential      moves issue
+```mermaid
+flowchart LR
+    A["/warm-up"] --> B
+
+    subgraph B["Product track"]
+        direction LR
+        B1[collect] --> B2[refine] --> B3[validate] --> B4[spec]
+    end
+
+    B --> C
+
+    subgraph C["Engineering track"]
+        direction LR
+        C1[context] --> C2[architecture] --> C3[plan] --> C4[work]
+    end
+
+    C --> D["/engineer:pre-pr<br/>4 checks, 2 parallel + 2 sequential"]
+    D --> E["/engineer:pr<br/>commits, opens PR, moves issue"]
+
+    B -.writes.-> BN["docs/business-context/features/&lt;slug&gt;.md<br/>(FR-XX + BDD)"]
+    C -.writes.-> CN[".claude/work/&lt;type&gt;/&lt;slug&gt;/<br/>context.md → architecture.md → plan.md"]
 ```
 
 ### The BDD → TDD → Coverage Loop
 
 Acceptance criteria are written once and consumed three times, without being retyped:
 
-```
-/product:spec writes Given/When/Then per FR-XX
-        │
-        ▼
-/engineer:context carries them into context.md verbatim
-        │
-        ▼
-/engineer:work implements test-first against them (red → green → refactor)
-        │
-        ▼
-/engineer:coverage (branch-test-planner) verifies every scenario has a matching test
+```mermaid
+flowchart TD
+    A["/product:spec writes Given/When/Then per FR-XX"]
+    B["/engineer:context carries them into context.md verbatim"]
+    C["/engineer:work implements test-first against them (red → green → refactor)"]
+    D["/engineer:coverage (branch-test-planner) verifies every scenario has a matching test"]
+
+    A --> B --> C --> D
 ```
 
 ### `/engineer:pre-pr` Execution Order
 
-```
-Step 1 (parallel, read-only)        Step 2 (sequential, writes)
-  /engineer:validate  ─┐              /engineer:sync-docs
-  /engineer:review     ─┘  ────▶      /engineer:coverage
+```mermaid
+flowchart LR
+    subgraph Step1["Step 1 (parallel, read-only)"]
+        direction TB
+        V["/engineer:validate"]
+        R["/engineer:review"]
+    end
+
+    subgraph Step2["Step 2 (sequential, writes)"]
+        direction TB
+        S["/engineer:sync-docs"] --> Co["/engineer:coverage"]
+    end
+
+    Step1 --> Step2
 ```
 
 Validate and review don't depend on each other's output and touch nothing on disk, so they run concurrently. Sync-docs and coverage both write, so they run one after the other, after the read-only pair finishes.
