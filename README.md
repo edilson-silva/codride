@@ -226,10 +226,10 @@ A pre-flight health check, not a fix-it command: reports `gh` auth status, the r
 - **Tips**: run it right after copying `.claude/` into a project, whether that project is brand-new or has years of history — on an existing repo it's what surfaces "this isn't `main`, it's `develop`" or "there's no test suite" before those assumptions break a command mid-pipeline instead of at the start.
 
 #### `/engineer:discover`
-Scans the codebase once (or incrementally) and writes `docs/technical-context/project-briefing.md` plus `docs/technical-context/briefing/{critical-rules,adrs-summary,backend-conventions,tech-stack}.md`. Detects ADRs, infers architectural conventions, and identifies the stack from the manifest file.
+Scans the codebase once (or incrementally) and writes `docs/technical-context/project-briefing.md` plus `docs/technical-context/briefing/{critical-rules,adrs-summary,backend-conventions,tech-stack}.md`. Detects ADRs, infers architectural conventions, and identifies the stack from the manifest file — then runs `adr-compliance-checker` against the existing codebase, so onboarding an existing project surfaces where the code has already drifted from its own documented decisions.
 
 - **Usage**: `/engineer:discover`, or `/engineer:discover --verbose` for a detailed run
-- **Tips**: write your ADRs *before* running this if you can — the more decisions are documented, the sharper `adr-compliance-checker` gets during `/engineer:work`.
+- **Tips**: write your ADRs *before* running this if you can — the more decisions are documented, the more `adr-compliance-checker` has to check against, both here and again later during `/engineer:work`.
 
 </details>
 

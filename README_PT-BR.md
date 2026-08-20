@@ -226,10 +226,10 @@ Uma checagem de saúde de pré-voo, não um comando de correção: reporta o sta
 - **Dicas**: rode logo depois de copiar `.claude/` pra um projeto, seja ele novo ou com anos de história — num repositório existente é ele que revela "isso não é `main`, é `develop`" ou "não existe suite de testes" antes que essas suposições quebrem um comando no meio do pipeline em vez de logo no início.
 
 #### `/engineer:discover`
-Escaneia a base de código uma vez (ou incrementalmente) e escreve `docs/technical-context/project-briefing.md` mais `docs/technical-context/briefing/{critical-rules,adrs-summary,backend-conventions,tech-stack}.md`. Detecta ADRs, infere convenções arquiteturais, e identifica o stack a partir do arquivo de manifesto.
+Escaneia a base de código uma vez (ou incrementalmente) e escreve `docs/technical-context/project-briefing.md` mais `docs/technical-context/briefing/{critical-rules,adrs-summary,backend-conventions,tech-stack}.md`. Detecta ADRs, infere convenções arquiteturais, e identifica o stack a partir do arquivo de manifesto — depois roda o `adr-compliance-checker` contra a base de código existente, então adotar o CoDriDe num projeto já existente já mostra onde o código divergiu das próprias decisões documentadas.
 
 - **Uso**: `/engineer:discover`, ou `/engineer:discover --verbose` pra uma execução detalhada
-- **Dicas**: escreva suas ADRs *antes* de rodar isso se puder — quanto mais decisões estiverem documentadas, mais afiado o `adr-compliance-checker` fica durante o `/engineer:work`.
+- **Dicas**: escreva suas ADRs *antes* de rodar isso se puder — quanto mais decisões estiverem documentadas, mais o `adr-compliance-checker` tem pra checar, tanto aqui quanto de novo depois durante o `/engineer:work`.
 
 </details>
 

@@ -71,6 +71,12 @@ For each `.md` file found in the ADR folder:
 - Order by impact (high → medium → low)
 - Build an index with links
 
+### 1.4 Check existing code against the consolidated ADRs
+
+Invoke the `adr-compliance-checker` agent against the current codebase, now that the ADRs are consolidated. This matters most when onboarding an existing project — ADRs are often written after the fact, once a convention has already drifted, so this is the first chance to see where the code and the documented decisions disagree.
+
+Advisory only: collect the findings for the Phase 4.2 report; don't block Phase 2-4 on them, and don't fix anything automatically.
+
 ---
 
 ## Phase 2: Backend architecture analysis (always runs)
@@ -178,6 +184,9 @@ Runtime/language version, web framework, database + ORM, key libraries, and impo
 - Critical rules: X
 - Backend framework(s): [name, or one per service in monorepo mode]
 - Database/ORM: [name]
+- ADR compliance (adr-compliance-checker): [no ADRs to check / N violations found, listed below / clean]
+
+[If violations were found, list each: which ADR, where in the code, and the suggested fix.]
 
 💡 Next steps:
 1. Review project-briefing.md for accuracy.
