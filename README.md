@@ -386,7 +386,7 @@ docs/
 ├── work/<type>/<slug>/               # context.md, architecture.md, plan.md per in-flight work item
 │   ├── feat/csv-order-export/        # e.g. a feature
 │   └── fix/password-reset-plus-alias/ # e.g. a bug fix
-└── rules/product-agent.mdc          # always-on PM/architect persona
+└── rules/product-agent.md           # always-on PM/architect persona
 ```
 
 `docs/technical-context/` normally has just one of the two shapes shown, not both. `<type>` in `.claude/work/` and branch names follows [Conventional Commits](https://www.conventionalcommits.org/) (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`, `build`, `ci`, `style`, `revert`).

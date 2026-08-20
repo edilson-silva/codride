@@ -386,7 +386,7 @@ docs/
 ├── work/<type>/<slug>/               # context.md, architecture.md, plan.md por item de trabalho em andamento
 │   ├── feat/csv-order-export/        # ex.: uma feature
 │   └── fix/password-reset-plus-alias/ # ex.: uma correção de bug
-└── rules/product-agent.mdc          # persona de PM/arquiteto sempre ativa
+└── rules/product-agent.md           # persona de PM/arquiteto sempre ativa
 ```
 
 `docs/technical-context/` normalmente tem só um dos dois formatos mostrados, não os dois. O `<type>` em `.claude/work/` e nos nomes de branch segue o [Conventional Commits](https://www.conventionalcommits.org/) (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`, `build`, `ci`, `style`, `revert`).

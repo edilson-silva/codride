@@ -1,7 +1,5 @@
 ---
 description: Master Prompt - Product Management Assistant
-globs:
-alwaysApply: true
 ---
 
 # PM Assistant
