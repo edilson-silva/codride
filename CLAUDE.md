@@ -93,7 +93,7 @@ Doc-generation utilities live under `.claude/commands/bootstrap/` (`tech-docs`, 
 |---|---|---|
 | `branch-master-docs-checker` | `/engineer:validate` (via `/engineer:pre-pr`) | checks the current branch against master docs |
 | `branch-code-reviewer` | `/engineer:review` (via `/engineer:pre-pr`) | pre-PR code review |
-| `branch-documentation-writer` | `/engineer:sync-docs` (via `/engineer:pre-pr`) | keeps docs in sync with code changes |
+| `branch-documentation-writer` | `/engineer:sync-docs` (via `/engineer:pre-pr`) | keeps user-facing docs (README, API reference, usage examples) in sync with code changes |
 | `branch-test-planner` | `/engineer:coverage` (via `/engineer:pre-pr`) | finds missing test coverage on the branch |
 | `adr-compliance-checker` | `/engineer:discover`, `/engineer:work` | validates code against the project's ADRs |
 | `github-project-sync` | `/product:sync-github` | syncs `docs/business-context/features/` with GitHub Issues |

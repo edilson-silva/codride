@@ -195,7 +195,7 @@ A feature typically flows **left to right**: an idea gets collected and refined 
 |---|---|---|
 | `branch-master-docs-checker` | Checks the branch against master docs | `/engineer:validate` (standalone or via `/engineer:pre-pr`) |
 | `branch-code-reviewer` | Code quality, bugs, security, dependency audit | `/engineer:review` |
-| `branch-documentation-writer` | Keeps project docs in sync with code changes | `/engineer:sync-docs` |
+| `branch-documentation-writer` | Keeps user-facing docs (README, API reference, usage examples) in sync with code changes | `/engineer:sync-docs` |
 | `branch-test-planner` | Finds missing test coverage, including BDD scenario gaps | `/engineer:coverage` |
 | `adr-compliance-checker` | Validates code against the project's ADRs | `/engineer:discover`, `/engineer:work` |
 | `github-project-sync` | Syncs feature docs with GitHub Issues | `/product:sync-github` |
@@ -327,7 +327,7 @@ An orchestrator, not a check of its own: runs `/engineer:validate` and `/enginee
 - **Usage**: `/engineer:pre-pr`
 
 #### `/engineer:validate` / `/engineer:review` / `/engineer:sync-docs` / `/engineer:coverage`
-One-line shortcuts that invoke `branch-master-docs-checker` / `branch-code-reviewer` / `branch-documentation-writer` / `branch-test-planner` directly — each also runs standalone, without the full `/engineer:pre-pr` sweep.
+One-line shortcuts that invoke `branch-master-docs-checker` / `branch-code-reviewer` / `branch-documentation-writer` / `branch-test-planner` directly — each also runs standalone, without the full `/engineer:pre-pr` sweep. Note the split: `/engineer:validate` checks the branch against the internal master docs (business/technical context, the project's "DNA"); `/engineer:sync-docs` updates the external, user-facing docs instead — README, API reference, usage examples, install/config guides — anything another developer or team would read to understand or integrate the project.
 
 - **Tips**: run `/engineer:coverage` right after a phase while the code is fresh; run `/engineer:review` mid-feature, not just before a PR.
 

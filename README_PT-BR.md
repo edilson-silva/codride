@@ -195,7 +195,7 @@ Uma feature normalmente flui **da esquerda pra direita**: uma ideia é coletada 
 |---|---|---|
 | `branch-master-docs-checker` | Checa a branch contra os master docs | `/engineer:validate` (isolado ou via `/engineer:pre-pr`) |
 | `branch-code-reviewer` | Qualidade de código, bugs, segurança, auditoria de dependências | `/engineer:review` |
-| `branch-documentation-writer` | Mantém a documentação do projeto sincronizada com as mudanças de código | `/engineer:sync-docs` |
+| `branch-documentation-writer` | Mantém a documentação voltada ao usuário (README, referência de API, exemplos de uso) sincronizada com as mudanças de código | `/engineer:sync-docs` |
 | `branch-test-planner` | Encontra cobertura de teste faltando, incluindo lacunas de cenários BDD | `/engineer:coverage` |
 | `adr-compliance-checker` | Valida o código contra as ADRs do projeto | `/engineer:discover`, `/engineer:work` |
 | `github-project-sync` | Sincroniza docs de feature com as GitHub Issues | `/product:sync-github` |
@@ -327,7 +327,7 @@ Um orquestrador, não uma checagem em si: roda `/engineer:validate` e `/engineer
 - **Uso**: `/engineer:pre-pr`
 
 #### `/engineer:validate` / `/engineer:review` / `/engineer:sync-docs` / `/engineer:coverage`
-Atalhos de uma linha que invocam `branch-master-docs-checker` / `branch-code-reviewer` / `branch-documentation-writer` / `branch-test-planner` diretamente — cada um também roda isolado, sem a varredura completa do `/engineer:pre-pr`.
+Atalhos de uma linha que invocam `branch-master-docs-checker` / `branch-code-reviewer` / `branch-documentation-writer` / `branch-test-planner` diretamente — cada um também roda isolado, sem a varredura completa do `/engineer:pre-pr`. Repare na divisão: `/engineer:validate` checa a branch contra os master docs internos (contexto de negócio/técnico, o "DNA" do projeto); `/engineer:sync-docs` atualiza a documentação externa, voltada ao usuário — README, referência de API, exemplos de uso, guias de instalação/configuração — tudo que outro desenvolvedor ou equipe leria pra entender ou integrar o projeto.
 
 - **Dicas**: rode `/engineer:coverage` logo depois de uma fase enquanto o código está fresco; rode `/engineer:review` no meio da feature, não só antes de um PR.
 

@@ -195,7 +195,7 @@ Una feature típicamente fluye **de izquierda a derecha**: una idea se recolecta
 |---|---|---|
 | `branch-master-docs-checker` | Verifica la rama contra los master docs | `/engineer:validate` (independiente o vía `/engineer:pre-pr`) |
 | `branch-code-reviewer` | Calidad de código, bugs, seguridad, auditoría de dependencias | `/engineer:review` |
-| `branch-documentation-writer` | Mantiene la documentación del proyecto sincronizada con los cambios de código | `/engineer:sync-docs` |
+| `branch-documentation-writer` | Mantiene la documentación orientada al usuario (README, referencia de API, ejemplos de uso) sincronizada con los cambios de código | `/engineer:sync-docs` |
 | `branch-test-planner` | Encuentra cobertura de pruebas faltante, incluyendo huecos de escenarios BDD | `/engineer:coverage` |
 | `adr-compliance-checker` | Valida el código contra las ADR del proyecto | `/engineer:discover`, `/engineer:work` |
 | `github-project-sync` | Sincroniza los docs de features con las GitHub Issues | `/product:sync-github` |
@@ -327,7 +327,7 @@ Un orquestador, no una verificación en sí misma: ejecuta `/engineer:validate` 
 - **Uso**: `/engineer:pre-pr`
 
 #### `/engineer:validate` / `/engineer:review` / `/engineer:sync-docs` / `/engineer:coverage`
-Atajos de una línea que invocan directamente `branch-master-docs-checker` / `branch-code-reviewer` / `branch-documentation-writer` / `branch-test-planner` — cada uno también se ejecuta de forma independiente, sin el barrido completo de `/engineer:pre-pr`.
+Atajos de una línea que invocan directamente `branch-master-docs-checker` / `branch-code-reviewer` / `branch-documentation-writer` / `branch-test-planner` — cada uno también se ejecuta de forma independiente, sin el barrido completo de `/engineer:pre-pr`. Nota la diferencia: `/engineer:validate` verifica la branch contra los master docs internos (contexto de negocio/técnico, el "ADN" del proyecto); `/engineer:sync-docs` actualiza la documentación externa, orientada al usuario — README, referencia de API, ejemplos de uso, guías de instalación/configuración — todo lo que otro desarrollador o equipo leería para entender o integrar el proyecto.
 
 - **Consejos**: ejecuta `/engineer:coverage` justo después de una fase mientras el código está fresco; ejecuta `/engineer:review` a mitad de la feature, no solo antes de un PR.
 

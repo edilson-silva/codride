@@ -1,6 +1,6 @@
 ---
 name: branch-documentation-writer
-description: Documentation specialist that analyzes code changes in the current branch and updates project documentation accordingly
+description: Documentation specialist that keeps user-facing project docs (README, API reference, usage examples, install/config guides) in sync with code changes in the current branch
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
