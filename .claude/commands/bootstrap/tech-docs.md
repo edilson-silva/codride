@@ -1,6 +1,6 @@
 ---
 description: Generate the technical-context doc architecture from scratch
-argument-hint: <links to repos/files>
+argument-hint: [links to repos/files — optional, omit to just analyze the local codebase]
 ---
 
 # Technical Documentation Generator
@@ -13,7 +13,7 @@ Generate a complete technical-context architecture under `docs/technical-context
 
 ## Input parameters
 
-**Required arguments:** links to files, repositories, and other sources of material to generate the technical documentation from. If you haven't received any arguments, ask for them before proceeding.
+**Arguments (optional):** links to additional files, repositories, or other external sources of material to generate the technical documentation from. Phase 1 already analyzes the local codebase on its own — arguments only add extra material beyond what's in this repo (e.g. a design doc that lives elsewhere, a related service's repo). If none were given, don't ask for them; just proceed with the local codebase.
 
 <arguments>
 #$ARGUMENTS

@@ -239,9 +239,9 @@ Scans the codebase once (or incrementally) and writes `docs/technical-context/pr
 Generate the multi-file master-docs architecture from scratch. Use once per project, then maintain by hand (or via `/engineer:sync-docs`).
 
 #### `/bootstrap:tech-docs`
-Generates the full technical-context architecture (project charter, ADRs, AI dev guide, codebase navigation, business logic, API spec, contributing guide, troubleshooting) under `docs/technical-context/`.
+Generates the full technical-context architecture (project charter, ADRs, AI dev guide, codebase navigation, business logic, API spec, contributing guide, troubleshooting) under `docs/technical-context/`. Analyzes the local codebase on its own — arguments are optional, only needed to point it at material outside this repo.
 
-- **Usage**: `/bootstrap:tech-docs <links to repos/files to analyze>`
+- **Usage**: `/bootstrap:tech-docs`, or `/bootstrap:tech-docs <links to repos/files to analyze>` to include external material
 
 #### `/bootstrap:business-docs`
 Generates the full business-context architecture (personas, journey, voice of customer, product strategy, feature catalog, competitive landscape, sales/messaging guidance) under `docs/business-context/`. Works two ways: **analysis mode** mines material you point it at; **collection mode** runs a founder/PM interview instead, for a brand-new project with nothing to analyze yet.

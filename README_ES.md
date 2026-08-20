@@ -239,9 +239,9 @@ Escanea la base de código una vez (o de forma incremental) y escribe `docs/tech
 Genera la arquitectura de master docs multi-archivo desde cero. Úsalo una vez por proyecto, y luego mantenlo a mano (o vía `/engineer:sync-docs`).
 
 #### `/bootstrap:tech-docs`
-Genera la arquitectura completa de contexto técnico (carta del proyecto, ADR, guía de desarrollo para IA, navegación de la base de código, lógica de negocio, especificación de API, guía de contribución, resolución de problemas) bajo `docs/technical-context/`.
+Genera la arquitectura completa de contexto técnico (carta del proyecto, ADR, guía de desarrollo para IA, navegación de la base de código, lógica de negocio, especificación de API, guía de contribución, resolución de problemas) bajo `docs/technical-context/`. Analiza la base de código local por sí solo — los argumentos son opcionales, solo necesarios para apuntarlo a material fuera de este repo.
 
-- **Uso**: `/bootstrap:tech-docs <enlaces a repos/archivos a analizar>`
+- **Uso**: `/bootstrap:tech-docs`, o `/bootstrap:tech-docs <enlaces a repos/archivos a analizar>` para incluir material externo
 
 #### `/bootstrap:business-docs`
 Genera la arquitectura completa de contexto de negocio (personas, journey, voz del cliente, estrategia de producto, catálogo de features, panorama competitivo, guías de ventas/mensajería) bajo `docs/business-context/`. Funciona de dos maneras: el **modo análisis** extrae información del material que le indiques; el **modo recolección** realiza una entrevista al fundador/PM en su lugar, para un proyecto nuevo sin nada que analizar todavía.
