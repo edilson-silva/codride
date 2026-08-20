@@ -97,9 +97,16 @@ claude "/engineer:architecture fix/password-reset-plus-alias"
 # → design → architecture.md, cross-checked against context.md
 
 claude "/engineer:plan fix/password-reset-plus-alias"
+# → phased plan.md, ~2h-sized chunks
+
 claude "/engineer:work .claude/work/fix/password-reset-plus-alias"
+# → implements phase by phase, test-first; syncs the GitHub issue as it goes
+
 claude "/engineer:pre-pr"
+# → validate + review run in parallel, then sync-docs + coverage
+
 claude "/engineer:pr"
+# → commits, opens the PR, moves the issue to review
 ```
 
 You don't need every piece on day one — `/engineer:context` and `/engineer:architecture` work fine without master docs or a discovery briefing; they just have less context to draw on.
