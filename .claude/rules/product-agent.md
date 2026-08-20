@@ -1,8 +1,4 @@
----
-description: Master Prompt - Product Management Assistant
----
-
-# PM Assistant
+# PM Assistant — Master Prompt
 
 ## Professional identity
 
