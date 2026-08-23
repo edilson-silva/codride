@@ -152,7 +152,6 @@ Con material existente para extraer (un README con una descripción real del pro
 - `docs/business-context/index.md` — índice maestro
 - `docs/business-context/CUSTOMER_PERSONAS.md`
 - `docs/business-context/CUSTOMER_JOURNEY.md`
-- `docs/business-context/VOICE_OF_CUSTOMER.md`
 - `docs/business-context/PRODUCT_STRATEGY.md`
 - `docs/business-context/features/` — un archivo por cada feature existente
 - `docs/business-context/PRODUCT_METRICS.md`

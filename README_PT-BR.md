@@ -152,7 +152,6 @@ Com material existente pra minerar (um README com descrição real do produto, i
 - `docs/business-context/index.md` — índice mestre
 - `docs/business-context/CUSTOMER_PERSONAS.md`
 - `docs/business-context/CUSTOMER_JOURNEY.md`
-- `docs/business-context/VOICE_OF_CUSTOMER.md`
 - `docs/business-context/PRODUCT_STRATEGY.md`
 - `docs/business-context/features/` — um arquivo por feature existente
 - `docs/business-context/PRODUCT_METRICS.md`

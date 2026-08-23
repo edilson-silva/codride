@@ -152,7 +152,6 @@ With existing material to mine (a README with a real product description, GitHub
 - `docs/business-context/index.md` — master index
 - `docs/business-context/CUSTOMER_PERSONAS.md`
 - `docs/business-context/CUSTOMER_JOURNEY.md`
-- `docs/business-context/VOICE_OF_CUSTOMER.md`
 - `docs/business-context/PRODUCT_STRATEGY.md`
 - `docs/business-context/features/` — one file per existing feature
 - `docs/business-context/PRODUCT_METRICS.md`

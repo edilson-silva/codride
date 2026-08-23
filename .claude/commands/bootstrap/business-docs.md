@@ -103,7 +103,6 @@ Write everything under `docs/business-context/`.
 ## Layer 1: Customer Context Architecture
 - [Customer Personas](CUSTOMER_PERSONAS.md)
 - [Customer Journey](CUSTOMER_JOURNEY.md)
-- [Voice of Customer](VOICE_OF_CUSTOMER.md)
 
 ## Layer 2: Product Context Architecture
 - [Product Strategy](PRODUCT_STRATEGY.md)
@@ -120,7 +119,7 @@ Write everything under `docs/business-context/`.
 - [Customer Communication Guidelines](CUSTOMER_COMMUNICATION.md)
 ```
 
-In Collection mode, several of these files won't have real material yet (e.g. `VOICE_OF_CUSTOMER.md` needs actual feedback that doesn't exist for a pre-launch product) — create them anyway with a short "not applicable yet" note and what would need to happen to fill them in, rather than skipping them silently.
+In Collection mode, several of these files won't have real material yet (e.g. `PRODUCT_METRICS.md` needs actual usage numbers that don't exist yet for a pre-launch product) — create them anyway with a short "not applicable yet" note and what would need to happen to fill them in, rather than skipping them silently.
 
 #### Generate the individual files
 
@@ -129,55 +128,53 @@ In Collection mode, several of these files won't have real material yet (e.g. `V
 - Collection mode: define the initial persona(s) from the interview answers, clearly marked as hypotheses.
 - Include demographics, goals, pain points, technology context, and AI-interaction notes.
 - Cover both primary users and decision-makers where applicable.
+- Capture the customer's actual language and terminology — verbatim phrasing pulled from issues/reviews/support/community mentions, not paraphrased — so the AI-interaction notes reflect how customers really talk, not how the product team talks about them.
+- Note recurring praise themes and frequent feature requests per persona, drawn from the same feedback sources; they sharpen "goals" and "pain points" with real signal instead of inference.
+- Collection mode: skip the verbatim-language and praise/requests notes — there's no real feedback to draw them from yet.
 
 **2. `CUSTOMER_JOURNEY.md`**
 - Map the full customer lifecycle from onboarding flows, feature-adoption patterns, support-ticket patterns, and community feedback.
 - Cover awareness, evaluation, adoption, growth, and advocacy/churn.
 - Document trigger events, decision criteria, and success milestones.
+- At the evaluation stage, capture how customers describe comparing this product to alternatives in their own words (reviews, community mentions, support conversations) — the competitive comparison as the customer experiences it, distinct from the market-level analysis in `COMPETITIVE_LANDSCAPE.md`.
 - Collection mode: map the *intended* journey from the interview instead — mark it as a hypothesis to validate once there are real users.
 
-**3. `VOICE_OF_CUSTOMER.md`**
-- Extract feedback patterns from GitHub issues/discussions, reviews/testimonials, support-ticket analysis, and social/community mentions.
-- Document praise themes, frequent requests, and competitive comparisons.
-- Identify customer language, terminology preferences, and communication patterns.
-- Collection mode: mark as not applicable yet, with a note on how to fill it in once there's real customer feedback.
-
-**4. `PRODUCT_STRATEGY.md`**
+**3. `PRODUCT_STRATEGY.md`**
 - Synthesize strategy from mission/vision material, the roadmap, competitive positioning, and market opportunity.
 - Include vision/mission, market position, strategic priorities, and product principles.
 - Document trade-off frameworks and quality standards.
 - Collection mode: this is the primary output of the interview — vision, target customer, differentiation, and success criteria as stated by the human, marked as hypotheses.
 
-**5. `features/` directory**
+**4. `features/` directory**
 - One file per feature: purpose and user benefit, usage patterns from docs/feedback, success metrics, common issues/limitations, AI-interaction guidance.
 - Organize by core features, advanced features, and integrations.
 - Name files descriptively (e.g. `user-authentication.md`, `data-export.md`, `api-integration.md`).
 - Collection mode: skip this directory if no features are built yet — note that it should be created once there's something to describe (e.g. by re-running this command, or `/product:collect` + `/product:spec` per feature as they're built).
 
-**6. `PRODUCT_METRICS.md`**
+**5. `PRODUCT_METRICS.md`**
 - Adoption metrics (downloads, stars, usage), quality metrics (coverage, benchmarks, issue resolution), feature performance, and usage-correlation patterns.
 - Focus on metrics that actually indicate product health and market success.
 - Collection mode: define the metrics that *will* matter (the ones from "what does success look like" in the interview) rather than actual numbers, which don't exist yet.
 
-**7. `COMPETITIVE_LANDSCAPE.md`**
+**6. `COMPETITIVE_LANDSCAPE.md`**
 - Direct competitors: strengths, weaknesses, positioning, pricing, business model, customer overlap.
 - Include a positioning framework and objection handling.
 - Both modes: this can usually be researched (WebSearch) even pre-launch, based on the alternatives named in the interview.
 
-**8. `INDUSTRY_TRENDS.md`**
+**7. `INDUSTRY_TRENDS.md`**
 - Market evolution, technology trends affecting the market, regulatory environment, and strategic implications.
 - Focus on trends that actually affect product strategy and customer needs.
 
-**9. `SALES_PROCESS.md`** (if relevant)
+**8. `SALES_PROCESS.md`** (if relevant)
 - Customer acquisition strategy: B2B sales methodology and objections, open-source community/contribution workflows, or B2C acquisition/conversion/retention — whichever applies.
 - Include customer-success patterns and expansion opportunities.
 - Collection mode: sketch the intended go-to-market from the interview's business-model answer, marked as a hypothesis.
 
-**10. `MESSAGING_FRAMEWORK.md`**
+**9. `MESSAGING_FRAMEWORK.md`**
 - Brand voice, core messaging and value propositions, audience-specific messaging, content guidelines.
 - Keep it aligned with customer preferences and market positioning.
 
-**11. `CUSTOMER_COMMUNICATION.md`**
+**10. `CUSTOMER_COMMUNICATION.md`**
 - AI-interaction guidelines: communication principles, response guidance per scenario, escalation triggers, privacy considerations, personalization.
 - Tailor to this project's actual customer base and channels.
 - Collection mode: skip or keep minimal — there's no real communication channel to guide yet.
