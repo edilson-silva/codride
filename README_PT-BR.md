@@ -53,7 +53,7 @@ Este repositório *é* o framework: não há código de aplicação aqui. Você 
 - [`gh` CLI](https://cli.github.com/), instalado e autenticado (`gh auth status`)
 - Git
 
-### Configuração em 5 Passos
+### Configuração em 6 Passos
 
 **Passo 1: Baixe o framework**
 ```bash
@@ -71,12 +71,17 @@ cd /path/to/your-project
 claude "/engineer:doctor"
 ```
 
-**Passo 4: Escaneie a base de código (opcional, mas deixa tudo mais afiado)**
+**Passo 4: Configure preferências do projeto (idioma da documentação, Artifacts, mais no futuro)**
+```bash
+claude "/meta:preferences"
+```
+
+**Passo 5: Escaneie a base de código (opcional, mas deixa tudo mais afiado)**
 ```bash
 claude "/engineer:discover"
 ```
 
-**Passo 5: Aqueça a sessão e comece**
+**Passo 6: Aqueça a sessão e comece**
 ```bash
 claude "/warm-up"
 ```
@@ -113,9 +118,9 @@ Você não precisa de tudo isso no primeiro dia — `/engineer:context` e `/engi
 
 ### Adotando o CoDriDe em um Projeto Existente
 
-A configuração em 5 passos acima funciona pra qualquer projeto, mas uma base de código existente já tem sinal valioso pra minerar — código, README, issues, ADRs — então os comandos de bootstrap, por padrão, analisam esse material primeiro e só fazem entrevista pra preencher as lacunas. Esse é o **modo Analysis**; um projeto novo/vazio roda o **modo Collection**, uma entrevista do zero (veja as [Perguntas Frequentes](#-perguntas-frequentes)).
+A configuração em 6 passos acima funciona pra qualquer projeto, mas uma base de código existente já tem sinal valioso pra minerar — código, README, issues, ADRs — então os comandos de bootstrap, por padrão, analisam esse material primeiro e só fazem entrevista pra preencher as lacunas. Esse é o **modo Analysis**; um projeto novo/vazio roda o **modo Collection**, uma entrevista do zero (veja as [Perguntas Frequentes](#-perguntas-frequentes)).
 
-**Passos 1-3: iguais à configuração em 5 passos** — copie o `.claude/`, rode o `/engineer:doctor`, rode o `/engineer:discover`.
+**Passos 1-4: iguais à configuração em 6 passos** — copie o `.claude/`, rode o `/engineer:doctor`, rode o `/meta:preferences`, rode o `/engineer:discover`.
 
 O `/engineer:discover` é a passada rápida e automática pela base de código: sem entrevista, seguro pra rodar de novo incrementalmente conforme o código evolui. Ele escreve:
 - `docs/technical-context/project-briefing.md` — índice mestre + resumo
@@ -126,7 +131,7 @@ O `/engineer:discover` é a passada rápida e automática pela base de código: 
 
 Ele também roda o `adr-compliance-checker` contra o código existente assim que os ADRs acima são catalogados — isso é reportado direto na saída do comando, não escrito em arquivo.
 
-**Passo 4 (opcional, mais profundo): o master doc técnico completo**
+**Passo 5 (opcional, mais profundo): o master doc técnico completo**
 ```bash
 claude "/bootstrap:tech-docs [links pro repo/docs, se houver]"
 ```
@@ -144,7 +149,7 @@ Mais pesado que o `/engineer:discover` — ele te entrevista (~10 perguntas) sob
 
 Rode só o `/engineer:discover` se você só quer que o `context.md` tenha algo pra usar rapidamente; rode o `/bootstrap:tech-docs` quando quiser o documento de "DNA" completo registrado. Rodar os dois é normal — o `/engineer:doctor` reporta os dois formatos presentes, sem tratar isso como conflito.
 
-**Passo 5: o lado de negócio**
+**Passo 6: o lado de negócio**
 ```bash
 claude "/bootstrap:business-docs [links pra docs/tickets do produto, se houver]"
 ```
@@ -163,7 +168,7 @@ Com material existente pra minerar (um README com descrição real do produto, i
 
 Se um projeto "existente" acabar tendo pouco ou nada pra minerar (um esqueleto vazio, uma ideia pré-lançamento), os dois comandos de bootstrap caem automaticamente pro modo Collection — igual a um projeto novo.
 
-**Passo 6: aqueça a sessão e comece o pipeline**
+**Passo 7: aqueça a sessão e comece o pipeline**
 ```bash
 claude "/warm-up"
 ```
@@ -357,12 +362,18 @@ Redige uma nova Architecture Decision Record sob `docs/technical-context/adr/`, 
 </details>
 
 <details>
-<summary><strong>Meta</strong> — <code>/meta:create-agent</code></summary>
+<summary><strong>Meta</strong> — <code>/meta:create-agent</code>, <code>/meta:preferences</code></summary>
 
 #### `/meta:create-agent`
 Cria um novo subagente sob `.claude/agents/`, nomeado `project-<name>.md` por padrão (veja [Configuração Avançada](#️-configuração-avançada)).
 
 - **Uso**: `/meta:create-agent "um agente que audita nosso schema GraphQL por mudanças que quebram compatibilidade antes do merge"` → cria `project-graphql-schema-auditor.md`
+
+#### `/meta:preferences`
+Configura preferências de nível de projeto, sempre no escopo deste projeto (nunca uma configuração de máquina inteira): em que idioma os artefatos de `docs/` e `.claude/work/` são escritos — não o idioma da conversa, que o Claude já espelha automaticamente — e se Artifacts (páginas hospedadas no claude.ai) podem ser publicados. Escreve `docs/PROJECT_PREFERENCES.md`, um arquivo irmão de `docs/business-context/` e `docs/technical-context/`, não aninhado dentro de nenhum dos dois, já que nada disso é conteúdo de negócio/produto. O `/warm-up` lê ele toda sessão; uma negação de Artifacts também é reforçada via `.claude/settings.local.json`. Pode rodar de novo a qualquer momento pra mudar uma resposta.
+
+- **Uso**: `/meta:preferences`
+- **Dicas**: rode logo depois do `/engineer:doctor` num projeto recém-adotado. O `/engineer:doctor` só reporta se as preferências estão configuradas — nunca escreve nelas.
 
 </details>
 
@@ -376,6 +387,8 @@ Cria um novo subagente sob `.claude/agents/`, nomeado `project-<name>.md` por pa
 docs/
 ├── index.md                    # ponto de entrada pros dois contextos abaixo — /bootstrap:index, modo single-project
 │                                #   (diferente de business-context/index.md logo abaixo)
+├── PROJECT_PREFERENCES.md      # idioma de docs/work, postura sobre Artifacts — /meta:preferences escreve,
+│                                #   /warm-up lê toda sessão; não é conteúdo de negócio/produto
 ├── business-context/           # master docs: estratégia, personas, catálogo de features
 │   ├── index.md                 # ponto de entrada, gerado por /bootstrap:business-docs
 │   ├── features/                 # um .md por feature — /product:spec ou /product:quick-spec escreve,
@@ -556,6 +569,8 @@ argument-hint: [<obrigatório> ou [opcional] — seguindo o padrão de colchetes
 
 `.claude/settings.local.json` guarda permissões locais da máquina (quais chamadas de `Bash`/`WebSearch` já estão pré-aprovadas) — é ignorado pelo git por convenção, não é pra ser compartilhado. Mantenha ele mínimo (`git *`, `gh *` cobrem quase tudo que este framework precisa).
 
+O array `permissions.deny` do mesmo arquivo é onde o `/meta:preferences` escreve quando você opta por não usar Artifacts — não edite isso à mão a menos que esteja mudando o que aquele comando já configurou. Como esse arquivo é local à máquina, a intenção compartilhada mora em `docs/PROJECT_PREFERENCES.md` (versionado, lido por todo `/warm-up`) — um colega numa máquina diferente ainda precisa rodar o `/meta:preferences` ele mesmo (ou adicionar a regra à mão) pra ter o mesmo reforço real localmente.
+
 ---
 
 ## 📖 Exemplos de Uso
@@ -628,6 +643,9 @@ R: Rode ela direto — `/engineer:validate`, `/engineer:review`, `/engineer:sync
 
 ### P: Como eu adiciono suporte pra um framework/linguagem que o CoDriDe não tem um agente pronto?
 R: `/meta:create-agent` — descreva o que você precisa em linguagem natural, ele propõe um nome prefixado com `project-*` e um conjunto mínimo de tools, e você confirma antes dele ser criado.
+
+### P: Como eu impeço o Claude de publicar Artifacts, ou defino o idioma dos arquivos de `docs/`/`.claude/work/`?
+R: `/meta:preferences` — pergunta uma vez (pode rodar de novo a qualquer momento pra mudar uma resposta), sempre no escopo do projeto atual. Escreve `docs/PROJECT_PREFERENCES.md`, lido por todo `/warm-up`; uma negação de Artifacts também é reforçada em `.claude/settings.local.json`. Isso não mexe no idioma da conversa — o Claude já espelha o idioma que você usa.
 
 ---
 

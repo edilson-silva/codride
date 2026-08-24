@@ -40,6 +40,10 @@ Run all of these and collect the results before reporting — don't stop at the 
 - `.claude/agents/` — are the 8 core agents present and unmodified-looking (spot check `branch-code-reviewer.md` exists)? Any `project-*.md` agents already added?
 - `.claude/work/` — any stale/abandoned work items sitting there from an interrupted session?
 
+### 8. Project preferences
+- Does `docs/PROJECT_PREFERENCES.md` exist (documentation language, Artifacts stance, extensible for more later)? If it denies Artifacts, does `.claude/settings.local.json` actually have the matching `permissions.deny` entry for the `Artifact` tool, or is the intent documented but not enforced on this machine?
+- Not blocking — report configured/not configured either way. `/meta:preferences` sets both, so just point there if either is missing.
+
 ## Output
 
 ```markdown
@@ -50,6 +54,7 @@ Run all of these and collect the results before reporting — don't stop at the 
 
 ## ⚠️ Missing (optional, but the pipeline is sharper with it)
 - [Each gap that isn't blocking, with the one command that fixes it]
+- Project preferences (Artifacts, language): [configured / not configured — run `/meta:preferences`]
 
 ## ❌ Blocking (these will break specific commands)
 - [Each real problem, which command(s) it breaks, and how to fix it]

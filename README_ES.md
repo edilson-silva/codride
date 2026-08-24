@@ -53,7 +53,7 @@ Este repositorio *es* el framework: aquí no hay código de aplicación. Copias 
 - [CLI de `gh`](https://cli.github.com/), instalada y autenticada (`gh auth status`)
 - Git
 
-### Configuración en 5 Pasos
+### Configuración en 6 Pasos
 
 **Paso 1: Obtén el framework**
 ```bash
@@ -71,12 +71,17 @@ cd /path/to/your-project
 claude "/engineer:doctor"
 ```
 
-**Paso 4: Escanea la base de código (opcional, pero afina todo lo demás)**
+**Paso 4: Configura las preferencias del proyecto (idioma de la documentación, Artifacts, más adelante)**
+```bash
+claude "/meta:preferences"
+```
+
+**Paso 5: Escanea la base de código (opcional, pero afina todo lo demás)**
 ```bash
 claude "/engineer:discover"
 ```
 
-**Paso 5: Calienta la sesión y comienza**
+**Paso 6: Calienta la sesión y comienza**
 ```bash
 claude "/warm-up"
 ```
@@ -113,9 +118,9 @@ No necesitas todas las piezas desde el primer día — `/engineer:context` y `/e
 
 ### Incorporando CoDriDe en un Proyecto Existente
 
-La configuración en 5 pasos de arriba funciona para cualquier proyecto, pero una base de código existente ya tiene señales valiosas para extraer — código, README, issues, ADRs — así que los comandos de bootstrap, por defecto, analizan ese material primero y solo entrevistan para llenar los vacíos. Este es el **modo Analysis**; un proyecto nuevo/vacío ejecuta en cambio el **modo Collection**, una entrevista desde cero (ver el [FAQ](#-preguntas-frecuentes)).
+La configuración en 6 pasos de arriba funciona para cualquier proyecto, pero una base de código existente ya tiene señales valiosas para extraer — código, README, issues, ADRs — así que los comandos de bootstrap, por defecto, analizan ese material primero y solo entrevistan para llenar los vacíos. Este es el **modo Analysis**; un proyecto nuevo/vacío ejecuta en cambio el **modo Collection**, una entrevista desde cero (ver el [FAQ](#-preguntas-frecuentes)).
 
-**Pasos 1-3: iguales a la configuración en 5 pasos** — copia `.claude/`, ejecuta `/engineer:doctor`, ejecuta `/engineer:discover`.
+**Pasos 1-4: iguales a la configuración en 6 pasos** — copia `.claude/`, ejecuta `/engineer:doctor`, ejecuta `/meta:preferences`, ejecuta `/engineer:discover`.
 
 `/engineer:discover` es la pasada rápida y automática sobre la base de código: sin entrevista, seguro de volver a ejecutar incrementalmente a medida que el código evoluciona. Escribe:
 - `docs/technical-context/project-briefing.md` — índice maestro + resumen
@@ -126,7 +131,7 @@ La configuración en 5 pasos de arriba funciona para cualquier proyecto, pero un
 
 También ejecuta `adr-compliance-checker` contra el código existente en cuanto los ADR de arriba están catalogados — eso se reporta directamente en la salida del comando, no se escribe en un archivo.
 
-**Paso 4 (opcional, más profundo): el master doc técnico completo**
+**Paso 5 (opcional, más profundo): el master doc técnico completo**
 ```bash
 claude "/bootstrap:tech-docs [enlaces al repo/docs, si los hay]"
 ```
@@ -144,7 +149,7 @@ Más pesado que `/engineer:discover` — te entrevista (~10 preguntas) sobre dec
 
 Ejecuta solo `/engineer:discover` si solo quieres que `context.md` tenga algo de qué valerse rápidamente; ejecuta `/bootstrap:tech-docs` cuando quieras el documento de "ADN" completo por escrito. Ejecutar ambos está bien — `/engineer:doctor` reporta ambos formatos presentes, no lo trata como un conflicto.
 
-**Paso 5: el lado de negocio**
+**Paso 6: el lado de negocio**
 ```bash
 claude "/bootstrap:business-docs [enlaces a docs/tickets del producto, si los hay]"
 ```
@@ -163,7 +168,7 @@ Con material existente para extraer (un README con una descripción real del pro
 
 Si un proyecto "existente" resulta tener poco o nada que extraer (un esqueleto vacío, una idea previa al lanzamiento), ambos comandos de bootstrap caen automáticamente al modo Collection — igual que un proyecto nuevo.
 
-**Paso 6: calienta la sesión y comienza el pipeline**
+**Paso 7: calienta la sesión y comienza el pipeline**
 ```bash
 claude "/warm-up"
 ```
@@ -357,12 +362,18 @@ Redacta un nuevo Architecture Decision Record bajo `docs/technical-context/adr/`
 </details>
 
 <details>
-<summary><strong>Meta</strong> — <code>/meta:create-agent</code></summary>
+<summary><strong>Meta</strong> — <code>/meta:create-agent</code>, <code>/meta:preferences</code></summary>
 
 #### `/meta:create-agent`
 Crea un nuevo subagente bajo `.claude/agents/`, nombrado `project-<name>.md` por defecto (ver [Configuración Avanzada](#️-configuración-avanzada)).
 
 - **Uso**: `/meta:create-agent "un agente que audita nuestro esquema GraphQL en busca de cambios incompatibles antes del merge"` → crea `project-graphql-schema-auditor.md`
+
+#### `/meta:preferences`
+Configura preferencias a nivel de proyecto, siempre con alcance a este proyecto (nunca una configuración de toda la máquina): en qué idioma se escriben los artefactos de `docs/` y `.claude/work/` — no el idioma de la conversación, que Claude ya refleja automáticamente — y si se pueden publicar Artifacts (páginas alojadas en claude.ai). Escribe `docs/PROJECT_PREFERENCES.md`, un archivo hermano de `docs/business-context/` y `docs/technical-context/`, no anidado dentro de ninguno de los dos, ya que nada de esto es contenido de negocio/producto. `/warm-up` lo lee cada sesión; una denegación de Artifacts también se refuerza vía `.claude/settings.local.json`. Se puede volver a ejecutar en cualquier momento para cambiar una respuesta.
+
+- **Uso**: `/meta:preferences`
+- **Consejos**: ejecútalo justo después de `/engineer:doctor` en un proyecto recién adoptado. `/engineer:doctor` solo reporta si las preferencias están configuradas — nunca las escribe.
 
 </details>
 
@@ -376,6 +387,8 @@ Crea un nuevo subagente bajo `.claude/agents/`, nombrado `project-<name>.md` por
 docs/
 ├── index.md                    # punto de entrada a ambos contextos abajo — /bootstrap:index, modo single-project
 │                                #   (distinto de business-context/index.md justo abajo)
+├── PROJECT_PREFERENCES.md      # idioma de docs/work, postura sobre Artifacts — /meta:preferences lo escribe,
+│                                #   /warm-up lo lee cada sesión; no es contenido de negocio/producto
 ├── business-context/           # master docs: estrategia, personas, catálogo de features
 │   ├── index.md                 # punto de entrada, generado por /bootstrap:business-docs
 │   ├── features/                 # un .md por feature — /product:spec o /product:quick-spec lo escribe,
@@ -556,6 +569,8 @@ argument-hint: [<obligatorio> o [opcional] — coincidiendo con el estilo de cor
 
 `.claude/settings.local.json` guarda permisos locales de la máquina (qué llamadas de `Bash`/`WebSearch` ya están preaprobadas) — está en `.gitignore` por convención, no está pensado para compartirse. Mantenlo mínimo (`git *`, `gh *` cubren casi todo lo que este framework necesita).
 
+El array `permissions.deny` del mismo archivo es donde `/meta:preferences` escribe cuando decides no usar Artifacts — no lo edites a mano salvo que estés cambiando lo que ese comando ya configuró. Como este archivo es local a la máquina, la intención compartida vive en `docs/PROJECT_PREFERENCES.md` (versionado, leído por cada `/warm-up`) — un compañero en otra máquina todavía necesita ejecutar `/meta:preferences` él mismo (o agregar la regla a mano) para tener el mismo refuerzo real localmente.
+
 ---
 
 ## 📖 Ejemplos de Uso
@@ -628,6 +643,9 @@ R: Ejecútala directamente — `/engineer:validate`, `/engineer:review`, `/engin
 
 ### P: ¿Cómo agrego soporte para un framework/lenguaje para el que CoDriDe no incluye un agente?
 R: `/meta:create-agent` — describe lo que necesitas en lenguaje natural, propone un nombre con prefijo `project-*` y un conjunto mínimo de herramientas, y tú confirmas antes de que se cree.
+
+### P: ¿Cómo evito que Claude publique Artifacts, o defino el idioma de los archivos en `docs/`/`.claude/work/`?
+R: `/meta:preferences` — pregunta una vez (se puede volver a ejecutar en cualquier momento para cambiar una respuesta), siempre con el alcance del proyecto actual. Escribe `docs/PROJECT_PREFERENCES.md`, leído por cada `/warm-up`; una denegación de Artifacts también se refuerza en `.claude/settings.local.json`. Esto no afecta el idioma de la conversación — Claude ya refleja el idioma que uses.
 
 ---
 

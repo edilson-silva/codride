@@ -53,7 +53,7 @@ This repo *is* the framework: there's no application code here. You copy `.claud
 - [`gh` CLI](https://cli.github.com/), installed and authenticated (`gh auth status`)
 - Git
 
-### 5-Step Setup
+### 6-Step Setup
 
 **Step 1: Get the framework**
 ```bash
@@ -71,12 +71,17 @@ cd /path/to/your-project
 claude "/engineer:doctor"
 ```
 
-**Step 4: Scan the codebase (optional, but sharpens everything else)**
+**Step 4: Configure project preferences (docs language, Artifacts, more later)**
+```bash
+claude "/meta:preferences"
+```
+
+**Step 5: Scan the codebase (optional, but sharpens everything else)**
 ```bash
 claude "/engineer:discover"
 ```
 
-**Step 5: Warm up and start**
+**Step 6: Warm up and start**
 ```bash
 claude "/warm-up"
 ```
@@ -113,9 +118,9 @@ You don't need every piece on day one — `/engineer:context` and `/engineer:arc
 
 ### Onboarding an Existing Project
 
-The 5-step setup above works for any project, but an existing codebase already has signal worth mining — code, README, issues, ADRs — so the bootstrap commands default to analyzing that material first and only interview you to fill the gaps. This is **Analysis mode**; a brand-new/empty project instead runs **Collection mode**, a from-scratch interview (see the [FAQ](#-faq)).
+The 6-step setup above works for any project, but an existing codebase already has signal worth mining — code, README, issues, ADRs — so the bootstrap commands default to analyzing that material first and only interview you to fill the gaps. This is **Analysis mode**; a brand-new/empty project instead runs **Collection mode**, a from-scratch interview (see the [FAQ](#-faq)).
 
-**Steps 1-3: same as the 5-step setup** — copy `.claude/` in, run `/engineer:doctor`, run `/engineer:discover`.
+**Steps 1-4: same as the 6-step setup** — copy `.claude/` in, run `/engineer:doctor`, run `/meta:preferences`, run `/engineer:discover`.
 
 `/engineer:discover` is the fast, automatic pass over the codebase: no interview, safe to re-run incrementally as the code evolves. It writes:
 - `docs/technical-context/project-briefing.md` — master index + summary
@@ -126,7 +131,7 @@ The 5-step setup above works for any project, but an existing codebase already h
 
 It also runs `adr-compliance-checker` against the existing code once the ADRs above are cataloged — that's reported directly in the command's output, not written to a file.
 
-**Step 4 (optional, deeper): the full technical master doc**
+**Step 5 (optional, deeper): the full technical master doc**
 ```bash
 claude "/bootstrap:tech-docs [links to repo/docs, if any]"
 ```
@@ -144,7 +149,7 @@ Heavier than `/engineer:discover` — it interviews you (~10 questions) about ar
 
 Run `/engineer:discover` alone if you just want `context.md` to have something to draw on quickly; run `/bootstrap:tech-docs` when you want the full "DNA" document written down. Running both is fine — `/engineer:doctor` reports both shapes present, it doesn't treat it as a conflict.
 
-**Step 5: the business side**
+**Step 6: the business side**
 ```bash
 claude "/bootstrap:business-docs [links to the product's docs/tickets, if you have them]"
 ```
@@ -163,7 +168,7 @@ With existing material to mine (a README with a real product description, GitHub
 
 If an "existing" repo turns out to have little or nothing to mine (a bare scaffold, a pre-launch idea), both bootstrap commands fall back to Collection mode automatically — same as a brand-new project.
 
-**Step 6: warm up and start the pipeline**
+**Step 7: warm up and start the pipeline**
 ```bash
 claude "/warm-up"
 ```
@@ -357,12 +362,18 @@ Drafts a new Architecture Decision Record under `docs/technical-context/adr/`, c
 </details>
 
 <details>
-<summary><strong>Meta</strong> — <code>/meta:create-agent</code></summary>
+<summary><strong>Meta</strong> — <code>/meta:create-agent</code>, <code>/meta:preferences</code></summary>
 
 #### `/meta:create-agent`
 Creates a new sub-agent under `.claude/agents/`, named `project-<name>.md` by default (see [Advanced Configuration](#️-advanced-configuration)).
 
 - **Usage**: `/meta:create-agent "an agent that audits our GraphQL schema for breaking changes before merge"` → creates `project-graphql-schema-auditor.md`
+
+#### `/meta:preferences`
+Configures project-level preferences, always scoped to this project (never a machine-wide setting): what language `docs/` and `.claude/work/` artifacts get written in — not conversational language, which Claude already mirrors automatically — and whether Artifacts (claude.ai-hosted pages) may be published. Writes `docs/PROJECT_PREFERENCES.md`, a sibling to `docs/business-context/` and `docs/technical-context/` rather than nested inside either, since none of this is business/product content. `/warm-up` reads it every session; an Artifacts denial is also enforced via `.claude/settings.local.json`. Re-runnable anytime to change an answer.
+
+- **Usage**: `/meta:preferences`
+- **Tips**: run it right after `/engineer:doctor` on a freshly adopted project. `/engineer:doctor` itself only reports whether preferences are configured — it never writes them.
 
 </details>
 
@@ -376,6 +387,8 @@ Creates a new sub-agent under `.claude/agents/`, named `project-<name>.md` by de
 docs/
 ├── index.md                    # entry point across both contexts below — /bootstrap:index, single-project mode
 │                                #   (distinct from business-context/index.md just below it)
+├── PROJECT_PREFERENCES.md      # docs/work language, Artifacts stance — /meta:preferences writes it,
+│                                #   /warm-up reads it every session; not business/product content
 ├── business-context/           # master docs: strategy, personas, feature catalog
 │   ├── index.md                 # entry point, generated by /bootstrap:business-docs
 │   ├── features/                 # one .md per feature — /product:spec or /product:quick-spec write it,
@@ -556,6 +569,8 @@ argument-hint: [<required> or [optional] — matches the bracket style]
 
 `.claude/settings.local.json` holds machine-local permissions (which `Bash`/`WebSearch` calls are pre-approved) — it's gitignored by convention, not meant to be shared. Keep it minimal (`git *`, `gh *` cover almost everything this framework needs).
 
+The same file's `permissions.deny` array is where `/meta:preferences` writes when you opt out of Artifacts — don't hand-edit this unless you're changing what that command already set. Since this file is machine-local, the shared intent lives in `docs/PROJECT_PREFERENCES.md` instead (versioned, read by every `/warm-up`) — a teammate on a different machine still needs to run `/meta:preferences` themselves (or add the rule by hand) to get the same hard enforcement locally.
+
 ---
 
 ## 📖 Usage Examples
@@ -628,6 +643,9 @@ A: Run it directly — `/engineer:validate`, `/engineer:review`, `/engineer:sync
 
 ### Q: How do I add support for a framework/language CoDriDe doesn't ship an agent for?
 A: `/meta:create-agent` — describe what you need in plain language, it proposes a `project-*`-prefixed name and a minimal tool set, and you confirm before it's created.
+
+### Q: How do I stop Claude from publishing Artifacts, or set the language for `docs/`/`.claude/work/` files?
+A: `/meta:preferences` — asks once (re-runnable anytime to change an answer), always scoped to the current project. Writes `docs/PROJECT_PREFERENCES.md`, read by every `/warm-up`; an Artifacts denial is also enforced in `.claude/settings.local.json`. This doesn't touch conversational language — Claude already mirrors whatever language you write in.
 
 ---
 

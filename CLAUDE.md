@@ -107,8 +107,9 @@ Add project- or stack-specific agents with `/meta:create-agent` rather than edit
 
 1. Copy `.claude/` (and this file, merged with any project-specific instructions) into the target repo.
 2. Run `/engineer:doctor` — confirms `gh` auth, the real default branch, whether a test suite exists, and what's already there on an existing project, before anything else runs on assumptions.
-3. Run `/engineer:discover` once to generate `docs/technical-context/`.
-4. Write master docs under `docs/business-context/` (use `/bootstrap:business-docs` and `/bootstrap:tech-docs` to bootstrap them).
-5. From there, follow the pipeline above.
+3. Run `/meta:preferences` — one-time (re-runnable) setup for project-level preferences: the language `docs/`/`.claude/work/` artifacts get written in (not conversational language, which Claude already mirrors automatically), and whether Artifacts may be published, extensible for more later. Writes `docs/PROJECT_PREFERENCES.md` — sibling to `docs/business-context/` and `docs/technical-context/`, not nested inside either, since this isn't business/product content. `/warm-up` reads it every session; Artifacts denial is also enforced via `.claude/settings.local.json`.
+4. Run `/engineer:discover` once to generate `docs/technical-context/`.
+5. Write master docs under `docs/business-context/` (use `/bootstrap:business-docs` and `/bootstrap:tech-docs` to bootstrap them).
+6. From there, follow the pipeline above.
 
 See [README.md](README.md) for the full walkthrough.
