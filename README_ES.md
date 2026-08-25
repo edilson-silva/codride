@@ -225,7 +225,7 @@ Estos 8 son el núcleo portable de CoDriDe — nombres sin prefijo. Cualquier co
 
 Adoptar CoDriDe para una herramienta distinta de Claude Code funciona igual que el [Paso 2 de la configuración](#-inicio-rápido) — solo copia la carpeta generada de esa herramienta en lugar de `.claude/` (p. ej. `.gemini/` y `GEMINI.md` para Gemini CLI). Ningún Claude Code involucrado en ningún momento para ese adoptante. Las carpetas de work item (`context.md`/`architecture.md`/`plan.md`) también son por herramienta, no compartidas — `.claude/work/` para Claude Code, el equivalente en la raíz de cada otro objetivo una vez generado — así que la decisión del adoptante de no commitear la carpeta de una herramienta también cubre sus work items.
 
-**Estado**: Claude Code es el único objetivo que existe hoy. Gemini CLI, Codex CLI y GitHub Copilot CLI llegan uno a la vez, cada uno vía su propia rama que ejecuta `/meta:generate-target` de verdad y agrega una guía de uso en `docs/llm-guides/<tool>.md`.
+**Estado**: Claude Code y [Gemini CLI](docs/llm-guides/gemini.md) ya están soportados hoy. Codex CLI y GitHub Copilot CLI llegan uno a la vez, cada uno vía su propia rama que ejecuta `/meta:generate-target` de verdad y agrega una guía de uso en `docs/llm-guides/<tool>.md`.
 
 ---
 

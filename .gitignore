@@ -3,10 +3,13 @@
 
 # Work-item artifacts (context.md, architecture.md, plan.md) — local working
 # docs for developing CoDriDe itself, kept out of this repo's own history to
-# stay clean. Doesn't affect adopting projects: only .claude/ and CLAUDE.md
-# get copied on adoption — this .gitignore lives at repo root, outside
-# .claude/, and is never part of that copy.
+# stay clean. Doesn't affect adopting projects: only a target's own generated
+# folder (.claude/ + CLAUDE.md for Claude Code, .gemini/ + GEMINI.md for
+# Gemini CLI, etc.) gets copied on adoption — this .gitignore lives at repo
+# root, outside all of those, and is never part of any copy. One rule per
+# generated target's work-item convention, since each is per-tool, not shared.
 .claude/work/*/
+.gemini/work/*/
 
 # macOS
 .DS_Store

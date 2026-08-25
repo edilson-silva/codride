@@ -1,0 +1,17 @@
+description = "Run validate, review, sync-docs, and coverage before opening a PR"
+prompt = """
+# Pre-PR
+
+We're wrapping up work on this branch and getting ready to open a pull request. This command is an orchestrator — it runs the four branch-level checks below, so you don't have to invoke them one by one. Each is also its own standalone command, if you only need one of them.
+
+Run these one after another, in order:
+
+1. `/engineer:validate` — invokes `branch-master-docs-checker` to verify the branch is aligned with the project's master docs.
+2. `/engineer:review` — invokes `branch-code-reviewer` to review the code and confirm it's ready to ship.
+3. `/engineer:sync-docs` — invokes `branch-documentation-writer` to update the project's documentation.
+4. `/engineer:coverage` — invokes `branch-test-planner` to finish writing tests for the branch.
+
+Handle any feedback these agents provide, and make the necessary changes and fixes.
+
+Once done, let me know and ask my permission to open the Pull Request.
+"""
