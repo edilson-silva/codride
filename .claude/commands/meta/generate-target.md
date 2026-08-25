@@ -59,8 +59,14 @@ keeps the algorithm free of exceptions. Don't skip it.
 For every `.claude/agents/<name>.md`:
 
 - **If the target has a native subagent primitive**: translate directly, preserving the `tools:`
-  allowlist using the target's own tool vocabulary. If a CoDriDe tool name has no target
-  equivalent, don't guess a mapping — flag it in the summary (step 9) instead.
+  allowlist using the target's own tool vocabulary. If the target's real tool-name vocabulary
+  hasn't been confirmed (e.g. via research, the way `{{args}}` was confirmed for Gemini), don't
+  invent target-native names — carry the CoDriDe/Claude Code tool names over verbatim instead,
+  with an explicit inline comment directly above the `tools:` field stating they're unverified
+  and need confirming against the target's real vocabulary. This is more useful to whoever reads
+  the generated file than an empty or omitted `tools:` field would be. Flag it in the run's
+  summary (step 9) as well — the inline comment and the summary note are both required, not one
+  or the other.
 - **If the target has no subagent primitive at all** (Codex, as of this writing): fold every
   command that currently invokes subagents into a single sequential prompt. Inline each invoked
   agent's instructions, in the same order the orchestrator invokes them today, into that one
@@ -115,9 +121,20 @@ file paths written this run — the manifest step 7 depends on to know what it's
 the next run. This is also what lets `/engineer:doctor` later detect whether a target has
 drifted from the current canonical source.
 
-### 9. Report a summary
+### 9. Cross-file consistency check, then report a summary
 
-State what was generated and where. Then — explicitly, not silently — list anything that had no
+Before reporting, grep the freshly generated output for every concept this run decided to drop,
+adapt, or reword for this target (e.g. a feature with no target equivalent, a reworded opening
+description, a collapsed-to-sequential orchestrator) — confirm the decision propagated to *every*
+file that mentions that concept, not just the one file where you made the call. This step exists
+because `/engineer:review` on the first real run (Gemini) found exactly this failure mode three
+times in one pass: Artifacts correctly dropped from `preferences`'s translation but still
+mentioned in `warm-up` and the folded instruction file; a reworded opening sentence in one file
+while a sibling file kept the untouched original; parallelism correctly collapsed in one
+orchestrator's Step 1 but leftover concurrency-implying phrases surviving elsewhere in the same
+file. A single correct edit in isolation is not the same as a consistent generation.
+
+Then state what was generated and where. Explicitly — not silently — list anything that had no
 clean mapping: unmatched tool names, ambiguous instructions, or target-format details this
 command's own subsection didn't cover with confidence. A human should be able to act on this list
 without having to re-derive it by reading the generated output themselves.
@@ -128,9 +145,11 @@ without having to re-derive it by reading the generated output themselves.
 
 - **Commands** → TOML files under `.gemini/commands/<namespace>/<name>.toml` (project-level),
   namespaced by subdirectory exactly like `.claude/commands/` (`git/commit.toml` → `/git:commit`).
-  Fields: `prompt`, `description`. **Unconfirmed — verify before first real run**: the exact
-  argument-placeholder syntax for the `prompt` field (CoDriDe's `#$ARGUMENTS` substitution needs a
-  Gemini-native equivalent).
+  Fields: `prompt`, `description`. **Confirmed** (fetched directly from Gemini CLI's own docs):
+  CoDriDe's `#$ARGUMENTS` becomes `{{args}}` in the `prompt` field — injected exactly as typed
+  when used in the prompt body, or automatically shell-escaped when used inside a `!{...}`
+  shell-injection block. There's no positional-argument equivalent (no `$1`/`$2`-style syntax) —
+  only the whole argument string, which matches CoDriDe's own convention.
 - **Subagents** → `.md` + YAML frontmatter under `.gemini/agents/` (project-level, committable),
   with real `tools:`/MCP scoping.
 - **Auto-loaded instructions** → root `GEMINI.md`.
