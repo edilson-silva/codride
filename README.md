@@ -86,6 +86,8 @@ claude "/engineer:discover"
 claude "/warm-up"
 ```
 
+The steps above assume Claude Code. Using a different LLM CLI? See [Multi-LLM Support](#multi-llm-support).
+
 ### First Feature Example
 
 ```bash
@@ -216,6 +218,14 @@ A feature typically flows **left to right**: an idea gets collected and refined 
 | `typescript-developer` | Idiomatic TypeScript/JavaScript implementation | On demand, non-trivial TS/JS work |
 
 These 8 are CoDriDe's portable core — unprefixed names. Anything created via `/meta:create-agent` is project-specific and gets a `project-` prefix instead (see [Advanced Configuration](#️-advanced-configuration)) — that prefix is the only thing distinguishing the two, since `.claude/agents/` doesn't support subdirectories.
+
+### Multi-LLM Support
+
+`.claude/commands/`, `.claude/agents/`, `CLAUDE.md`, and `.claude/rules/*.md` are CoDriDe's canonical, hand-authored source — always maintained directly, never generated. `/meta:generate-target <tool>` (maintainer-side, run in this repo, never by someone adopting the framework) translates that source into another LLM CLI's own native format, written to that tool's own conventional path at repo root — never nested under a CoDriDe-specific folder, and always a full, clean overwrite so it can't silently drift out of sync with hand-edits made in between. `/engineer:doctor` flags a target as stale once `.claude/` has changed since it was last generated.
+
+Adopting CoDriDe for a tool other than Claude Code works exactly like [Step 2 of setup](#-quick-start) — just copy that tool's generated folder instead of `.claude/` (e.g. `.gemini/` and `GEMINI.md` for Gemini CLI). No Claude Code involved at any point for that adopter. Work-item folders (`context.md`/`architecture.md`/`plan.md`) are per-tool too, not shared — `.claude/work/` for Claude Code, the equivalent under each other target's own root once generated — so an adopter's choice not to commit a given tool's folder at all still covers its work items.
+
+**Status**: Claude Code is the only target that exists today. Gemini CLI, Codex CLI, and GitHub Copilot CLI ship one at a time, each via its own branch that actually runs `/meta:generate-target` for real and adds a usage guide at `docs/llm-guides/<tool>.md`.
 
 ---
 
@@ -362,7 +372,7 @@ Drafts a new Architecture Decision Record under `docs/technical-context/adr/`, c
 </details>
 
 <details>
-<summary><strong>Meta</strong> — <code>/meta:create-agent</code>, <code>/meta:preferences</code></summary>
+<summary><strong>Meta</strong> — <code>/meta:create-agent</code>, <code>/meta:preferences</code>, <code>/meta:generate-target</code></summary>
 
 #### `/meta:create-agent`
 Creates a new sub-agent under `.claude/agents/`, named `project-<name>.md` by default (see [Advanced Configuration](#️-advanced-configuration)).
@@ -374,6 +384,12 @@ Configures project-level preferences, always scoped to this project (never a mac
 
 - **Usage**: `/meta:preferences`
 - **Tips**: run it right after `/engineer:doctor` on a freshly adopted project. `/engineer:doctor` itself only reports whether preferences are configured — it never writes them.
+
+#### `/meta:generate-target`
+Translates CoDriDe's canonical `.claude/` source into another LLM CLI's native format — see [Multi-LLM Support](#multi-llm-support). Maintainer-side only: run in this repo to produce a target's files, never by someone adopting the framework.
+
+- **Usage**: `/meta:generate-target gemini` (or `codex`, `copilot`)
+- **Tips**: always a full, clean overwrite of that target's previously generated output — safe and expected to re-run anytime `.claude/` changes. `/engineer:doctor` flags when a target has drifted from the current source.
 
 </details>
 
@@ -409,7 +425,10 @@ docs/
 │                                     #   test-coverage-report.md (from /engineer:coverage) per work item
 │   ├── feat/csv-order-export/        # e.g. a feature
 │   └── fix/password-reset-plus-alias/ # e.g. a bug fix
-└── rules/product-agent.md           # always-on PM/architect persona
+├── rules/product-agent.md           # always-on PM/architect persona
+└── .generation-log.md               # append-only manifest — /meta:generate-target writes it,
+                                      #   /engineer:doctor reads it to flag stale targets;
+                                      #   empty until the first target is generated
 ```
 
 `docs/technical-context/` normally has just one of the two shapes shown, not both. `<type>` in `.claude/work/` and branch names follows [Conventional Commits](https://www.conventionalcommits.org/) (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`, `build`, `ci`, `style`, `revert`).
@@ -646,6 +665,9 @@ A: `/meta:create-agent` — describe what you need in plain language, it propose
 
 ### Q: How do I stop Claude from publishing Artifacts, or set the language for `docs/`/`.claude/work/` files?
 A: `/meta:preferences` — asks once (re-runnable anytime to change an answer), always scoped to the current project. Writes `docs/PROJECT_PREFERENCES.md`, read by every `/warm-up`; an Artifacts denial is also enforced in `.claude/settings.local.json`. This doesn't touch conversational language — Claude already mirrors whatever language you write in.
+
+### Q: Can I use CoDriDe with Gemini CLI, Codex CLI, or GitHub Copilot instead of Claude Code?
+A: That's the goal, shipping one tool at a time — see [Multi-LLM Support](#multi-llm-support) for the current status. `.claude/` stays the canonical source either way; `/meta:generate-target <tool>` produces each other tool's own native files, which an adopter copies instead of `.claude/`, with no Claude Code involved on their end.
 
 ---
 

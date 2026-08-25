@@ -112,4 +112,16 @@ Add project- or stack-specific agents with `/meta:create-agent` rather than edit
 5. Write master docs under `docs/business-context/` (use `/bootstrap:business-docs` and `/bootstrap:tech-docs` to bootstrap them).
 6. From there, follow the pipeline above.
 
+The steps above assume Claude Code. Using a different LLM CLI? See "Multi-LLM support" below.
+
+## Multi-LLM support
+
+CoDriDe's canonical, hand-authored source is `.claude/commands/`, `.claude/agents/`, this file, and `.claude/rules/*.md` — always maintained directly, never generated. `/meta:generate-target <tool>` (maintainer-side, run in this repo, never by someone adopting the framework) translates that source into another LLM CLI's native format — its own commands/agents/instructions, written to that tool's own conventional path at repo root, never nested under a CoDriDe-specific folder. Regenerating is a full, clean overwrite every time, never an incremental merge, so the generated output never drifts out of sync with hand-edits made in between. `/engineer:doctor` flags a target as stale if `.claude/` has changed since it was last generated.
+
+Adopting CoDriDe for a tool other than Claude Code works the same way as step 1 above, just with a different folder: copy that tool's generated output instead of `.claude/` (e.g. `.gemini/` and `GEMINI.md` for Gemini CLI) — no Claude Code involved at any point for that adopter.
+
+Work-item folders (`context.md`/`architecture.md`/`plan.md`) are per-tool, not shared: `.claude/work/<type>/<slug>/` for Claude Code, and the equivalent under each other target's own root once generated — translated by the same generic rule as everything else, no special case, so an adopter's choice not to commit a given tool's folder at all still applies to its work items too.
+
+**Status**: Claude Code (this repo's native format) is the only target that exists today. Gemini CLI, Codex CLI, and GitHub Copilot CLI ship one at a time, each via its own branch that actually runs `/meta:generate-target` for real (never hand-authored to look similar) and adds its own usage guide at `docs/llm-guides/<tool>.md`.
+
 See [README.md](README.md) for the full walkthrough.

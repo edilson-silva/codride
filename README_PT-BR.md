@@ -86,6 +86,8 @@ claude "/engineer:discover"
 claude "/warm-up"
 ```
 
+Os passos acima assumem Claude Code. Vai usar outra LLM CLI? Veja [Suporte Multi-LLM](#suporte-multi-llm).
+
 ### Exemplo de Primeira Feature
 
 ```bash
@@ -216,6 +218,14 @@ Uma feature normalmente flui **da esquerda pra direita**: uma ideia é coletada 
 | `typescript-developer` | Implementação idiomática em TypeScript/JavaScript | Sob demanda, trabalho não-trivial em TS/JS |
 
 Esses 8 são o núcleo portável do CoDriDe — nomes sem prefixo. Qualquer coisa criada via `/meta:create-agent` é específica do projeto e ganha um prefixo `project-` (veja [Configuração Avançada](#️-configuração-avançada)) — esse prefixo é a única coisa que distingue os dois, já que `.claude/agents/` não suporta subdiretórios.
+
+### Suporte Multi-LLM
+
+`.claude/commands/`, `.claude/agents/`, `CLAUDE.md` e `.claude/rules/*.md` são a fonte canônica do CoDriDe, escrita à mão — sempre mantida diretamente, nunca gerada. `/meta:generate-target <tool>` (do lado do mantenedor, rodado neste repositório, nunca por quem adota o framework) traduz essa fonte pro formato nativo de outra LLM CLI, escrito no caminho convencional daquela ferramenta na raiz do repo — nunca aninhado numa pasta específica do CoDriDe, e sempre um overwrite completo e limpo, pra nunca ficar dessincronizado silenciosamente de edições manuais feitas no meio do caminho. O `/engineer:doctor` sinaliza um alvo como desatualizado assim que `.claude/` muda desde a última geração.
+
+Adotar o CoDriDe pra uma ferramenta diferente do Claude Code funciona exatamente como o [Passo 2 da configuração](#-início-rápido) — só copie a pasta gerada daquela ferramenta em vez de `.claude/` (ex: `.gemini/` e `GEMINI.md` pro Gemini CLI). Nenhum Claude Code envolvido em nenhum momento pra esse adotante. As pastas de work item (`context.md`/`architecture.md`/`plan.md`) também são por ferramenta, não compartilhadas — `.claude/work/` pro Claude Code, o equivalente na raiz de cada outro alvo assim que gerado — então a decisão do adotante de não commitar a pasta de uma ferramenta também cobre os work items dela.
+
+**Status**: Claude Code é o único alvo que existe hoje. Gemini CLI, Codex CLI e GitHub Copilot CLI chegam um de cada vez, cada um via sua própria branch que roda o `/meta:generate-target` de verdade e adiciona um guia de uso em `docs/llm-guides/<tool>.md`.
 
 ---
 
@@ -362,7 +372,7 @@ Redige uma nova Architecture Decision Record sob `docs/technical-context/adr/`, 
 </details>
 
 <details>
-<summary><strong>Meta</strong> — <code>/meta:create-agent</code>, <code>/meta:preferences</code></summary>
+<summary><strong>Meta</strong> — <code>/meta:create-agent</code>, <code>/meta:preferences</code>, <code>/meta:generate-target</code></summary>
 
 #### `/meta:create-agent`
 Cria um novo subagente sob `.claude/agents/`, nomeado `project-<name>.md` por padrão (veja [Configuração Avançada](#️-configuração-avançada)).
@@ -374,6 +384,12 @@ Configura preferências de nível de projeto, sempre no escopo deste projeto (nu
 
 - **Uso**: `/meta:preferences`
 - **Dicas**: rode logo depois do `/engineer:doctor` num projeto recém-adotado. O `/engineer:doctor` só reporta se as preferências estão configuradas — nunca escreve nelas.
+
+#### `/meta:generate-target`
+Traduz a fonte canônica `.claude/` do CoDriDe pro formato nativo de outra LLM CLI — veja [Suporte Multi-LLM](#suporte-multi-llm). Só do lado do mantenedor: rode neste repositório pra produzir os arquivos de um alvo, nunca por quem adota o framework.
+
+- **Uso**: `/meta:generate-target gemini` (ou `codex`, `copilot`)
+- **Dicas**: sempre um overwrite completo e limpo da saída gerada anteriormente pra aquele alvo — seguro e esperado rodar de novo sempre que `.claude/` mudar. O `/engineer:doctor` sinaliza quando um alvo ficou desatualizado em relação à fonte atual.
 
 </details>
 
@@ -409,7 +425,10 @@ docs/
 │                                     #   condicional (do /engineer:coverage) por item em andamento
 │   ├── feat/csv-order-export/        # ex.: uma feature
 │   └── fix/password-reset-plus-alias/ # ex.: uma correção de bug
-└── rules/product-agent.md           # persona de PM/arquiteto sempre ativa
+├── rules/product-agent.md           # persona de PM/arquiteto sempre ativa
+└── .generation-log.md               # log de manifesto append-only — /meta:generate-target escreve,
+                                      #   /engineer:doctor lê pra sinalizar alvos desatualizados;
+                                      #   vazio até o primeiro alvo ser gerado
 ```
 
 `docs/technical-context/` normalmente tem só um dos dois formatos mostrados, não os dois. O `<type>` em `.claude/work/` e nos nomes de branch segue o [Conventional Commits](https://www.conventionalcommits.org/) (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`, `build`, `ci`, `style`, `revert`).
@@ -646,6 +665,9 @@ R: `/meta:create-agent` — descreva o que você precisa em linguagem natural, e
 
 ### P: Como eu impeço o Claude de publicar Artifacts, ou defino o idioma dos arquivos de `docs/`/`.claude/work/`?
 R: `/meta:preferences` — pergunta uma vez (pode rodar de novo a qualquer momento pra mudar uma resposta), sempre no escopo do projeto atual. Escreve `docs/PROJECT_PREFERENCES.md`, lido por todo `/warm-up`; uma negação de Artifacts também é reforçada em `.claude/settings.local.json`. Isso não mexe no idioma da conversa — o Claude já espelha o idioma que você usa.
+
+### P: Dá pra usar o CoDriDe com Gemini CLI, Codex CLI ou GitHub Copilot em vez do Claude Code?
+R: Esse é o objetivo, lançando uma ferramenta de cada vez — veja [Suporte Multi-LLM](#suporte-multi-llm) pro status atual. `.claude/` continua sendo a fonte canônica de qualquer forma; `/meta:generate-target <tool>` produz os arquivos nativos de cada outra ferramenta, que um adotante copia em vez de `.claude/`, sem nenhum Claude Code envolvido do lado dele.
 
 ---
 

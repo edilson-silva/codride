@@ -1,5 +1,12 @@
 # Local Claude Code overrides — machine/session-specific, not shared
 .claude/settings.local.json
 
+# Work-item artifacts (context.md, architecture.md, plan.md) — local working
+# docs for developing CoDriDe itself, kept out of this repo's own history to
+# stay clean. Doesn't affect adopting projects: only .claude/ and CLAUDE.md
+# get copied on adoption — this .gitignore lives at repo root, outside
+# .claude/, and is never part of that copy.
+.claude/work/*/
+
 # macOS
 .DS_Store

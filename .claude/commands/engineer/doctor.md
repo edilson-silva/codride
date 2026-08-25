@@ -44,6 +44,15 @@ Run all of these and collect the results before reporting — don't stop at the 
 - Does `docs/PROJECT_PREFERENCES.md` exist (documentation language, Artifacts stance, extensible for more later)? If it denies Artifacts, does `.claude/settings.local.json` actually have the matching `permissions.deny` entry for the `Artifact` tool, or is the intent documented but not enforced on this machine?
 - Not blocking — report configured/not configured either way. `/meta:preferences` sets both, so just point there if either is missing.
 
+### 9. Generated target freshness
+- If `.claude/.generation-log.md` exists and has at least one entry, for each recorded target: get the latest commit that touches the canonical source (`git log -1 --format=%H -- .claude/commands .claude/agents CLAUDE.md .claude/rules`), then run `git merge-base --is-ancestor <that-commit> <target's-recorded-hash>`. Three distinct outcomes, not two — check the exit code precisely, don't just treat "non-zero" as one bucket:
+  - Exit `0` → fresh (the source hasn't changed since that target was generated).
+  - Exit `1` → stale (a valid check that came back negative — the source has moved on).
+  - Exit `128` (git reports `fatal: Not a valid commit name ...` on stderr) → the recorded hash no longer exists in this repo's history (e.g. after a rebase, squash, or force-push). Don't treat this as stale — report "can't verify freshness, recorded commit not found" instead, and suggest regenerating.
+- Don't compare the two hashes for equality directly — they're expected to differ even when fresh, since the recorded hash is the whole-repo `HEAD` at generation time, not the source path's own last-touched commit.
+- If stale (exit `1`), flag that target's output — point to `/meta:generate-target <tool>` to refresh it.
+- Not blocking, and silent (no line at all, don't even mention it) if `.claude/.generation-log.md` doesn't exist yet or is empty — this only matters once at least one target has actually been generated.
+
 ## Output
 
 ```markdown
@@ -55,6 +64,7 @@ Run all of these and collect the results before reporting — don't stop at the 
 ## ⚠️ Missing (optional, but the pipeline is sharper with it)
 - [Each gap that isn't blocking, with the one command that fixes it]
 - Project preferences (Artifacts, language): [configured / not configured — run `/meta:preferences`]
+- Generated target freshness: [only if `.claude/.generation-log.md` has entries] [target]: [fresh / stale — run `/meta:generate-target <tool>`]
 
 ## ❌ Blocking (these will break specific commands)
 - [Each real problem, which command(s) it breaks, and how to fix it]
