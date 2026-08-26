@@ -122,6 +122,6 @@ Adopting CoDriDe for a tool other than Claude Code works the same way as step 1 
 
 Work-item folders (`context.md`/`architecture.md`/`plan.md`) are per-tool, not shared: `.claude/work/<type>/<slug>/` for Claude Code, and the equivalent under each other target's own root once generated — translated by the same generic rule as everything else, no special case, so an adopter's choice not to commit a given tool's folder at all still applies to its work items too.
 
-**Status**: Claude Code (this repo's native format) is the only target that exists today. Gemini CLI, Codex CLI, and GitHub Copilot CLI ship one at a time, each via its own branch that actually runs `/meta:generate-target` for real (never hand-authored to look similar) and adds its own usage guide at `docs/llm-guides/<tool>.md`.
+**Status**: Claude Code (this repo's native format), [Gemini CLI](docs/llm-guides/gemini.md), and [Codex CLI](docs/llm-guides/codex.md) are supported today. GitHub Copilot CLI ships next, via its own branch that actually runs `/meta:generate-target` for real (never hand-authored to look similar) and adds its own usage guide at `docs/llm-guides/copilot.md`.
 
 See [README.md](README.md) for the full walkthrough.

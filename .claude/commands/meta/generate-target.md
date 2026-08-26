@@ -159,12 +159,32 @@ without having to re-derive it by reading the generated output themselves.
 
 ### Codex CLI
 
-- **Commands** → Skills (`SKILL.md`-style, semantic/implicit invocation — not a `/namespace:name`
-  slash syntax). The old `~/.codex/prompts/*.md` mechanism is deprecated; don't generate for it.
-  **Unconfirmed — verify before first real run**: the exact project-level Skills directory (only
-  the deprecated global `~/.codex/prompts/` path is confirmed).
-- **Subagents** → none. Always apply step 4's collapse rule — every orchestrator becomes one
-  sequential Skill file with all invoked agents' instructions inlined in order.
+- **Commands** → Skills. **Confirmed** (fetched directly from `developers.openai.com/codex/skills`,
+  redirecting to `learn.chatgpt.com/docs/build-skills`): a Skill is a *directory*, not a flat file —
+  `.agents/skills/<skill-name>/SKILL.md`, scanned by Codex from the current working directory up to
+  the repository root. Frontmatter requires `name` and `description` only (no `argument-hint` — that
+  was the deprecated `~/.codex/prompts/*.md` mechanism; don't generate for it). Invocation is an
+  explicit `$skill-name` mention or implicit/semantic selection when the user's request matches
+  `description` — never a `/namespace:name` slash command.
+- **No argument-substitution mechanism — confirmed, not just unconfirmed.** Checked directly
+  against the official docs (and cross-checked a community claim of `argument-hint`/`$VARNAME`
+  support, which was rejected as a likely conflation with the deprecated prompts mechanism, not the
+  current one): Skills work from natural-language context only. Every source command's
+  `#$ARGUMENTS` block must be **reworded**, not substituted — replace the templated-injection
+  instruction with plain guidance to extract the equivalent information from the user's request
+  (e.g. "the user's request should name the work item as `<type>/<slug>`; if they didn't state it
+  clearly, ask before proceeding"). This is real per-file editorial judgment, not a find-replace.
+- **Skill naming**: CoDriDe has real cross-namespace name collisions (`/engineer:validate` and
+  `/product:validate` both exist) that a flat `name:` field can't hold. Use `<namespace>-<name>`
+  (e.g. `engineer-validate`, `product-validate`) — collision-free, still traceable to the source
+  namespace. The top-level `warm-up` command (no namespace in the Claude source) stays `warm-up`.
+- **Subagents** → none at all, not even sequential. Every command with a fixed agent caller gets
+  that agent's full logic inlined directly into its Skill body, at the point the Claude source
+  invokes it (step 4's collapse rule). For the two on-demand agents with no fixed caller
+  (`python-developer`, `typescript-developer`), each becomes its own standalone Skill instead of
+  being inlined anywhere — an honest adaptation (Codex has no delegation concept to preserve, so
+  the content survives as something the user explicitly invokes) rather than dropping them because
+  the *invocation mechanism* doesn't translate.
 - **Auto-loaded instructions** → a single `AGENTS.md` per directory level (first non-empty file
   wins as you walk up the tree) — no directory-of-files pattern, so step 6's concatenation is
   mandatory here, not optional.

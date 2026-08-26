@@ -10,6 +10,7 @@
 # generated target's work-item convention, since each is per-tool, not shared.
 .claude/work/*/
 .gemini/work/*/
+.codex/work/*/
 
 # macOS
 .DS_Store
