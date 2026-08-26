@@ -1,6 +1,6 @@
 ---
 name: engineer-context
-description: Start a unit of work: interview to build shared understanding, written to context.md
+description: Start a unit of work — interview to build shared understanding, written to context.md
 ---
 
 # Work Context

@@ -193,15 +193,51 @@ without having to re-derive it by reading the generated output themselves.
 
 ### GitHub Copilot CLI
 
-- **Commands and subagents** both fold into `.agent.md` files (`name`, `description`, `tools`,
-  `model`, `mcp-servers` fields) — Copilot has no separate command layer, so every CoDriDe command
-  becomes a Copilot agent, invoked via `/agent`, natural language, or auto-inference.
-  **Unconfirmed — verify before first real run**: the conventional directory `.agent.md` files
-  live in at the project level.
-- **Auto-loaded instructions** → `.github/copilot-instructions.md`. Copilot can also `@`-include
-  other files directly (including `AGENTS.md`/`CLAUDE.md`) — the Copilot-specific branch should
-  evaluate using includes instead of full concatenation (step 6's fallback path) before assuming
-  physical concatenation is necessary here.
-- **Parallelism**: `.agent.md` files have real tool scoping, but parallel dispatch across them is
-  unconfirmed either way — apply the sequential-by-default rule (step 5) until the Copilot-specific
-  branch confirms otherwise.
+- **Commands and subagents** both use the same `.agent.md` format — Copilot has no separate
+  command layer, so every CoDriDe command becomes a Copilot agent. **Confirmed**: flat files at
+  `.github/agents/<name>.agent.md` (project level; not a directory-per-file the way Codex is).
+  Frontmatter fields: `name`, required `description`, `tools`, `model`,
+  `disable-model-invocation`, `user-invocable`, `mcp-servers`. `tools` uses Copilot's own lowercase
+  vocabulary (e.g. `["read", "search"]`) — sourced from a community example, not GitHub's own
+  complete reference table, so treat exact tool-name mappings as reasonably confirmed but not
+  fully authoritative; carry Claude's tool names over with an explicit unverified comment rather
+  than guess a Copilot-native translation, same treatment already used for Gemini and Codex. Give
+  a carried-over `model:` value (e.g. `opus`, `sonnet`) the same unverified-comment treatment —
+  Copilot's real model identifiers weren't confirmed either, and a silently-wrong `model:` fails
+  the same way a silently-wrong `tools:` entry does.
+  Invocation: `/agent-name` slash command interactively, explicit natural-language instruction,
+  automatic inference against `description`, or `--agent <name> --prompt "..."` programmatically.
+- **`tools:` only on agents translated from `.claude/agents/`, never on agents translated from
+  `.claude/commands/`.** The 8 core agents each declare a real `tools:` allowlist in their Claude
+  source frontmatter — carry that over (with the unverified-comment treatment above). Commands
+  declare no such thing on Claude Code (they run unrestricted), so don't invent a `tools:`
+  allowlist for the 27 command-derived agents — omit the field entirely, matching the source. A
+  guessed allowlist on a command is worse than none: it silently narrows what an orchestrator like
+  `engineer-pre-pr` (which exists purely to delegate) or a discovery command that shells out can
+  actually do, in a way nothing in the source authorizes.
+- **No argument-substitution mechanism found** — same absence as Codex, not re-derived: reword
+  every `#$ARGUMENTS` block into natural-language extraction guidance, don't substitute.
+- **No collapse needed — unlike Codex.** Copilot has real subagent delegation (the model can
+  autonomously delegate to a custom agent, and v1.0.66+ usage-based-billing plans can configure
+  concurrency and delegation-depth limits explicitly). Every command keeps its own
+  `user-invocable: true` agent file and delegates to the appropriate core agent's
+  `user-invocable: false` file, exactly as the Claude source's command→agent relationship already
+  works — just re-expressed in Copilot's single unified format instead of two separate ones.
+  **Exception**: `python-developer` and `typescript-developer` are the two core agents with no
+  fixed calling command on Claude Code — CLAUDE.md's own agent table documents them as used "on
+  demand," i.e. invoked directly by a human, not delegated to by another command. Give both
+  `user-invocable: true` here, same carve-out already made for these two on the Codex target
+  (there, they became standalone directly-invocable Skills for the same reason). The other 6 core
+  agents stay `user-invocable: false`.
+- **Auto-loaded instructions** → generate a dedicated `.github/copilot-instructions.md` (folded,
+  same as Gemini/Codex) — don't rely on Copilot's confirmed ability to also directly read
+  `AGENTS.md`/`CLAUDE.md`/`GEMINI.md` if present (it does, and combines/deduplicates them with no
+  defined precedence order), since a Copilot-only adopter never receives those other targets'
+  files. Document the auto-read as a bonus in the guide, not a mechanism to depend on. Copilot also
+  supports a real directory-of-files pattern (`.github/instructions/**/*.instructions.md`, each
+  requiring an `applyTo` glob) — not used by this generator, since a single folded file already
+  satisfies step 6, but worth knowing it exists if a future need for path-scoped instructions
+  arises.
+- **Parallelism**: real and configurable, but plan-gated (not available to every adopter by
+  default) — apply the sequential-by-default rule (step 5) for the generated output regardless;
+  note in that target's guide that adopters on a qualifying plan could enable it themselves.
