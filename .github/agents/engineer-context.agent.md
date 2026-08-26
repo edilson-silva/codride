@@ -1,15 +1,16 @@
 ---
+name: engineer-context
 description: Start a unit of work — interview to build shared understanding, written to context.md
-argument-hint: <type>/<slug>
+user-invocable: true
 ---
 
 # Work Context
 
-This command kicks off a new unit of work — a feature, fix, chore, docs update, or anything else that will get its own work item — by building shared understanding of what's being built and writing it to `context.md`. Everything below says "feature" for readability, but applies the same way to any type of work.
+This agent kicks off a new unit of work — a feature, fix, chore, docs update, or anything else that will get its own work item — by building shared understanding of what's being built and writing it to `context.md`. Everything below says "feature" for readability, but applies the same way to any type of work.
 
-Work items live under `.claude/work/<type>/<slug>/`, where `<type>` is a [Conventional Commits](https://www.conventionalcommits.org/) type (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`, `build`, `ci`, `style`, `revert`) and `<slug>` is a short kebab-case name — e.g. `.claude/work/fix/password-reset-plus-alias/`. This mirrors typical branch naming (`fix/password-reset-plus-alias`), so the work item folder and the branch name usually match.
+Work items live under `.copilot/work/<type>/<slug>/`, where `<type>` is a [Conventional Commits](https://www.conventionalcommits.org/) type (`feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `perf`, `build`, `ci`, `style`, `revert`) and `<slug>` is a short kebab-case name — e.g. `.copilot/work/fix/password-reset-plus-alias/`. This mirrors typical branch naming (`fix/password-reset-plus-alias`), so the work item folder and the branch name usually match.
 
-This is the first of two steps: `/engineer:context` (this one) writes `context.md`; `/engineer:architecture` then designs the implementation and writes `architecture.md`, cross-checked against this file.
+This is the first of two steps: `engineer-context` (this one) writes `context.md`; `engineer-architecture` then designs the implementation and writes `architecture.md`, cross-checked against this file.
 
 ## Context enhancement (optional — if a project briefing exists)
 
@@ -89,7 +90,7 @@ else:
 
 - If you're not on a branch for this work, ask for authorization to create one, named `<type>/<slug>` to match the work item folder.
 - If you're already on a branch matching this work item's slug, you're ready.
-- Check whether `.claude/work/<type>/<slug>` already exists. If `context.md` is already there, confirm with the human whether you're revising it or this is a duplicate of existing work — don't silently overwrite it.
+- Check whether `.copilot/work/<type>/<slug>` already exists. If `context.md` is already there, confirm with the human whether you're revising it or this is a duplicate of existing work — don't silently overwrite it.
 - Ask the user for this work item's input — usually one or more GitHub issue numbers, but a plain description or a linked doc works too if this project isn't using GitHub Issues for tracking. The rest of this command says "issue" throughout for brevity; treat it as "the requirement, wherever it lives" if that's not literally a GitHub issue.
 
 ## Discovery
@@ -103,22 +104,18 @@ Go through the issues — and their parent/child issues if relevant — and buil
 - What the dependencies are
 - What the constraints are
 
-If the source issue has acceptance criteria (`Given/When/Then`, written by `/product:spec` or `/product:quick-spec`), carry them into `context.md` verbatim — don't paraphrase or summarize them away. `/engineer:work` implements test-first against them, and `/engineer:coverage` checks they're all covered, so they need to survive intact.
+If the source issue has acceptance criteria (`Given/When/Then`, written by `product-spec` or `product-quick-spec`), carry them into `context.md` verbatim — don't paraphrase or summarize them away. `engineer-work` implements test-first against them, and `engineer-coverage` checks they're all covered, so they need to survive intact.
 
 After thinking through these questions, formulate the 3-5 most critical clarifications needed to complete the task. Present these to the human along with your understanding and proposals.
 
 After getting the human's answers, decide whether you need further clarification. If so, keep the dialogue going.
 
-Once you have a solid understanding of what's being built, save it to `.claude/work/<type>/<slug>/context.md` and ask the human to review it.
+Once you have a solid understanding of what's being built, save it to `.copilot/work/<type>/<slug>/context.md` and ask the human to review it.
 
-If the human agrees with your understanding, tell them `/engineer:architecture <type>/<slug>` is the next step. Otherwise, keep iterating together until you get explicit approval.
+If the human agrees with your understanding, tell them `engineer-architecture` for `<type>/<slug>` is the next step. Otherwise, keep iterating together until you get explicit approval.
 
 If anything discussed here affects what's documented in the requirements, ask the human for permission to edit those requirements — either by editing them directly (structural changes) or adding comments (clarifications). If the requirement lives in a GitHub issue, update the issue; if it's a text file, update the file.
 
-⛔ **Don't proceed automatically to architecture design. Wait for the human's explicit approval and for them to invoke `/engineer:architecture` manually.**
+⛔ **Don't proceed automatically to architecture design. Wait for the human's explicit approval and for them to invoke `engineer-architecture` manually.**
 
-<slug>
-#$ARGUMENTS
-</slug>
-
-Expected format: `<type>/<slug>`, e.g. `feat/csv-order-export` or `fix/password-reset-plus-alias`.
+The user's request should name the work item as `<type>/<slug>`, e.g. `feat/csv-order-export` or `fix/password-reset-plus-alias`; if they didn't state it clearly, ask before proceeding rather than guessing.
