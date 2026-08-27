@@ -128,7 +128,7 @@ La configuración en 6 pasos de arriba funciona para cualquier proyecto, pero un
 - `docs/technical-context/project-briefing.md` — índice maestro + resumen
 - `docs/technical-context/briefing/critical-rules.md` — las 3-5 reglas más críticas, copiadas por completo en cada futuro `context.md`
 - `docs/technical-context/briefing/adrs-summary.md` — resúmenes indexados de ADRs (creado con una nota "ninguno todavía" si el proyecto no tiene ADRs)
-- `docs/technical-context/briefing/backend-conventions.md` — estructura de carpetas, nomenclatura, patrones de código
+- `docs/technical-context/briefing/backend-conventions.md`, `frontend-conventions.md`, `mobile-conventions.md` — estructura de carpetas, nomenclatura, patrones de código, un archivo por dominio realmente detectado (no mutuamente excluyentes)
 - `docs/technical-context/briefing/tech-stack.md` — runtime, framework, base de datos/ORM, bibliotecas clave
 
 También ejecuta `adr-compliance-checker` contra el código existente en cuanto los ADR de arriba están catalogados — eso se reporta directamente en la salida del comando, no se escribe en un archivo.
@@ -249,7 +249,7 @@ Una verificación de estado previa al vuelo, no un comando de corrección: repor
 - **Consejos**: ejecútalo justo después de copiar `.claude/` en un proyecto, ya sea nuevo o con años de historia — en un repositorio existente es lo que revela "esto no es `main`, es `develop`" o "no hay suite de pruebas" antes de que esas suposiciones rompan un comando a mitad del pipeline en lugar de al principio.
 
 #### `/engineer:discover`
-Escanea la base de código una vez (o de forma incremental) y escribe `docs/technical-context/project-briefing.md` más `docs/technical-context/briefing/{critical-rules,adrs-summary,backend-conventions,tech-stack}.md`. Detecta ADR, infiere convenciones arquitectónicas, e identifica el stack a partir del archivo de manifiesto — luego ejecuta `adr-compliance-checker` contra la base de código existente, así que adoptar CoDriDe en un proyecto ya existente muestra de inmediato dónde el código se desvió de sus propias decisiones documentadas.
+Escanea la base de código una vez (o de forma incremental) y escribe `docs/technical-context/project-briefing.md` más `docs/technical-context/briefing/critical-rules.md`, `adrs-summary.md` y `tech-stack.md`. También detecta qué dominios están presentes — backend, frontend, mobile (React Native, Flutter, iOS nativo, Android nativo), no mutuamente excluyentes — y escribe `backend-conventions.md`/`frontend-conventions.md`/`mobile-conventions.md` para los que realmente encuentre. Infiere convenciones arquitectónicas e identifica el stack a partir del archivo de manifiesto por dominio — luego ejecuta `adr-compliance-checker` contra la base de código existente, así que adoptar CoDriDe en un proyecto ya existente muestra de inmediato dónde el código se desvió de sus propias decisiones documentadas.
 
 - **Uso**: `/engineer:discover`, o `/engineer:discover --verbose` para una ejecución detallada
 - **Consejos**: escribe tus ADR *antes* de ejecutar esto si puedes — cuantas más decisiones estén documentadas, más tendrá `adr-compliance-checker` para verificar, tanto aquí como más tarde durante `/engineer:work`.
@@ -413,7 +413,8 @@ docs/
 │   └── CUSTOMER_PERSONAS.md, PRODUCT_STRATEGY.md, COMPETITIVE_LANDSCAPE.md, ... (ver /bootstrap:business-docs)
 └── technical-context/          # la forma depende de qué comando la generó:
     ├── project-briefing.md      #   /engineer:discover  → briefing compacto (+ briefing/*.md abajo)
-    ├── briefing/                 #   critical-rules, adrs-summary, backend-conventions, tech-stack
+    ├── briefing/                 #   critical-rules, adrs-summary, tech-stack, + backend/frontend/mobile-conventions
+    │                             #   (solo los dominios realmente detectados — no mutuamente excluyentes)
     ├── index.md                 #   /bootstrap:tech-docs → punto de entrada al conjunto completo abajo
     ├── adr/                      # Architecture Decision Records
     └── project_charter.md, CODEBASE_GUIDE.md, BUSINESS_LOGIC.md, API_SPECIFICATION.md, ...

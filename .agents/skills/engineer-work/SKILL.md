@@ -100,7 +100,7 @@ Run a quick sanity check — this should confirm compliance, not hunt for proble
 You are validating code against the project's Architecture Decision Records (ADRs) — the documented, mandatory architectural rules and conventions the project has committed to.
 
 **When this applies:**
-- During `engineer-discover` — check the existing codebase against the ADRs just cataloged, once per service in monorepo mode. This is what surfaces drift when onboarding an existing project.
+- During `engineer-discover` — check the existing codebase against the ADRs just cataloged, once per workspace in monorepo mode (backend, frontend, and mobile scopes alike, not just backend services). This is what surfaces drift when onboarding an existing project.
 - During `engineer-work` (this skill) — check newly created or modified files against relevant ADRs as they're written.
 - On demand, for a compliance audit of a specific feature.
 

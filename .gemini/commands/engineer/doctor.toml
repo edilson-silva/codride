@@ -31,8 +31,8 @@ Run all of these and collect the results before reporting — don't stop at the 
 - Missing labels aren't an error — every command that uses them already says "adjust to what the repo uses" — but report which ones are missing so the human can decide whether to create them or keep redirecting commands to different names each time.
 
 ### 6. Monorepo shape
-- Check for `workspaces` in `package.json`, `pnpm-workspace.yaml`, `nx.json`, `turbo.json`, or `lerna.json`.
-- If found, note it — `/engineer:discover` handles monorepos by analyzing each service separately; if `/engineer:discover` was already run before the project became a monorepo (or vice versa), the briefing may be stale in a specific way worth flagging.
+- Check for `workspaces` in `package.json`, `pnpm-workspace.yaml`, `nx.json`, `turbo.json`, `lerna.json`, `settings.gradle`(.kts) with multiple `include(...)` modules, or multiple independent manifests (`package.json`, `pyproject.toml`, `pubspec.yaml`, `build.gradle`(.kts), `Package.swift`, `go.mod`) under `apps/*/`/`packages/*/` — same broadened, non-JS-only signal list `/engineer:discover`'s own Phase 2.0 uses.
+- If found, note it — `/engineer:discover` handles monorepos by analyzing each workspace separately (whichever domains — backend, frontend, mobile — each one turns out to have); if `/engineer:discover` was already run before the project became a monorepo (or vice versa), the briefing may be stale in a specific way worth flagging.
 
 ### 7. CoDriDe framework files
 - `.gemini/agents/` — are the 8 core agents present and unmodified-looking (spot check `branch-code-reviewer.md` exists)? Any `project-*.md` agents already added?

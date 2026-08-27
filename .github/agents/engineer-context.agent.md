@@ -36,21 +36,25 @@ else:
 
 2. **Ask the engineer** (to know what else to load):
    ```
-   To optimize the context for this feature, I need to know which backend
-   areas are impacted (check all that apply):
+   To optimize the context for this feature, I need to know which areas
+   are impacted (check all that apply):
 
-   [ ] API/Controllers (creating or modifying endpoints)
-   [ ] Database/ORM (schema or query changes)
-   [ ] Authentication/Authorization
-   [ ] Services/Business logic
+   [ ] Backend — API/Controllers (creating or modifying endpoints)
+   [ ] Backend — Database/ORM (schema or query changes)
+   [ ] Backend — Authentication/Authorization
+   [ ] Backend — Services/Business logic
+   [ ] Frontend — Components/UI, state management, styling
+   [ ] Mobile — Screens, navigation, native modules (React Native, Flutter, native iOS/Android)
    [ ] Other: ___________
 
    This lets me load only the ADRs and conventions relevant to this
    feature, saving tokens and staying focused on what matters here.
    ```
 
-3. **Load selectively based on the answers:**
-   - Always load `briefing/backend-conventions.md` if any area is checked.
+3. **Load selectively based on the answers** — only from whichever of `backend-conventions.md`, `frontend-conventions.md`, `mobile-conventions.md` actually exist (`engineer-discover` only generates the ones for domains it detected, see its Phase 2):
+   - Any Backend area checked: load `briefing/backend-conventions.md`, if it exists.
+   - Frontend checked: load `briefing/frontend-conventions.md`, if it exists.
+   - Mobile checked: load `briefing/mobile-conventions.md`, if it exists.
    - If "API/Controllers" is checked: read the "API Design" section of `briefing/adrs-summary.md`.
    - If "Database/ORM" is checked: read the "Database & Persistence" section.
    - If "Authentication" is checked: read the "Security" section.
