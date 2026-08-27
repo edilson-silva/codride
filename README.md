@@ -128,7 +128,7 @@ The 6-step setup above works for any project, but an existing codebase already h
 - `docs/technical-context/project-briefing.md` — master index + summary
 - `docs/technical-context/briefing/critical-rules.md` — the 3-5 most critical rules, copied in full into every future `context.md`
 - `docs/technical-context/briefing/adrs-summary.md` — indexed ADR summaries (created with a "none yet" note if the project has no ADRs)
-- `docs/technical-context/briefing/backend-conventions.md` — folder structure, naming, code patterns
+- `docs/technical-context/briefing/backend-conventions.md`, `frontend-conventions.md`, `mobile-conventions.md` — folder structure, naming, code patterns, one file per domain actually detected (not mutually exclusive)
 - `docs/technical-context/briefing/tech-stack.md` — runtime, framework, database/ORM, key libraries
 
 It also runs `adr-compliance-checker` against the existing code once the ADRs above are cataloged — that's reported directly in the command's output, not written to a file.
@@ -249,7 +249,7 @@ A pre-flight health check, not a fix-it command: reports `gh` auth status, the r
 - **Tips**: run it right after copying `.claude/` into a project, whether that project is brand-new or has years of history — on an existing repo it's what surfaces "this isn't `main`, it's `develop`" or "there's no test suite" before those assumptions break a command mid-pipeline instead of at the start.
 
 #### `/engineer:discover`
-Scans the codebase once (or incrementally) and writes `docs/technical-context/project-briefing.md` plus `docs/technical-context/briefing/{critical-rules,adrs-summary,backend-conventions,tech-stack}.md`. Detects ADRs, infers architectural conventions, and identifies the stack from the manifest file — then runs `adr-compliance-checker` against the existing codebase, so onboarding an existing project surfaces where the code has already drifted from its own documented decisions.
+Scans the codebase once (or incrementally) and writes `docs/technical-context/project-briefing.md` plus `docs/technical-context/briefing/critical-rules.md`, `adrs-summary.md`, and `tech-stack.md`. Also detects which domains are present — backend, frontend, mobile (React Native, Flutter, native iOS, native Android), not mutually exclusive — and writes `backend-conventions.md`/`frontend-conventions.md`/`mobile-conventions.md` for whichever were actually found. Infers architectural conventions and identifies the stack from the manifest file per domain — then runs `adr-compliance-checker` against the existing codebase, so onboarding an existing project surfaces where the code has already drifted from its own documented decisions.
 
 - **Usage**: `/engineer:discover`, or `/engineer:discover --verbose` for a detailed run
 - **Tips**: write your ADRs *before* running this if you can — the more decisions are documented, the more `adr-compliance-checker` has to check against, both here and again later during `/engineer:work`.
@@ -413,7 +413,8 @@ docs/
 │   └── CUSTOMER_PERSONAS.md, PRODUCT_STRATEGY.md, COMPETITIVE_LANDSCAPE.md, ... (see /bootstrap:business-docs)
 └── technical-context/          # shape depends on which command generated it:
     ├── project-briefing.md      #   /engineer:discover  → compact briefing (+ briefing/*.md below)
-    ├── briefing/                 #   critical-rules, adrs-summary, backend-conventions, tech-stack
+    ├── briefing/                 #   critical-rules, adrs-summary, tech-stack, + backend/frontend/mobile-conventions
+    │                             #   (only the domains actually detected — not mutually exclusive)
     ├── index.md                 #   /bootstrap:tech-docs → entry point for the fuller set below
     ├── adr/                      # Architecture Decision Records
     └── project_charter.md, CODEBASE_GUIDE.md, BUSINESS_LOGIC.md, API_SPECIFICATION.md, ...

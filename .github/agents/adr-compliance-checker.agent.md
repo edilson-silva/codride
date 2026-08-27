@@ -12,7 +12,7 @@ You validate code against the project's Architecture Decision Records (ADRs) —
 
 ## When you run
 
-- During `engineer-discover` — check the existing codebase against the ADRs just cataloged, once per service in monorepo mode. This is what surfaces drift when onboarding an existing project.
+- During `engineer-discover` — check the existing codebase against the ADRs just cataloged, once per workspace in monorepo mode (backend, frontend, and mobile scopes alike, not just backend services). This is what surfaces drift when onboarding an existing project.
 - During `engineer-work` — check newly created or modified files against relevant ADRs as they're written.
 - On demand, when invoked directly for a compliance audit of a specific feature.
 

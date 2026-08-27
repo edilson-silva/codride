@@ -128,7 +128,7 @@ O `/engineer:discover` é a passada rápida e automática pela base de código: 
 - `docs/technical-context/project-briefing.md` — índice mestre + resumo
 - `docs/technical-context/briefing/critical-rules.md` — as 3-5 regras mais críticas, copiadas por completo em todo `context.md` futuro
 - `docs/technical-context/briefing/adrs-summary.md` — resumos indexados de ADRs (criado com uma nota "nenhum ainda" se o projeto não tiver ADRs)
-- `docs/technical-context/briefing/backend-conventions.md` — estrutura de pastas, nomenclatura, padrões de código
+- `docs/technical-context/briefing/backend-conventions.md`, `frontend-conventions.md`, `mobile-conventions.md` — estrutura de pastas, nomenclatura, padrões de código, um arquivo por domínio realmente detectado (não mutuamente exclusivos)
 - `docs/technical-context/briefing/tech-stack.md` — runtime, framework, banco de dados/ORM, bibliotecas-chave
 
 Ele também roda o `adr-compliance-checker` contra o código existente assim que os ADRs acima são catalogados — isso é reportado direto na saída do comando, não escrito em arquivo.
@@ -249,7 +249,7 @@ Uma checagem de saúde de pré-voo, não um comando de correção: reporta o sta
 - **Dicas**: rode logo depois de copiar `.claude/` pra um projeto, seja ele novo ou com anos de história — num repositório existente é ele que revela "isso não é `main`, é `develop`" ou "não existe suite de testes" antes que essas suposições quebrem um comando no meio do pipeline em vez de logo no início.
 
 #### `/engineer:discover`
-Escaneia a base de código uma vez (ou incrementalmente) e escreve `docs/technical-context/project-briefing.md` mais `docs/technical-context/briefing/{critical-rules,adrs-summary,backend-conventions,tech-stack}.md`. Detecta ADRs, infere convenções arquiteturais, e identifica o stack a partir do arquivo de manifesto — depois roda o `adr-compliance-checker` contra a base de código existente, então adotar o CoDriDe num projeto já existente já mostra onde o código divergiu das próprias decisões documentadas.
+Escaneia a base de código uma vez (ou incrementalmente) e escreve `docs/technical-context/project-briefing.md` mais `docs/technical-context/briefing/critical-rules.md`, `adrs-summary.md` e `tech-stack.md`. Também detecta quais domínios estão presentes — backend, frontend, mobile (React Native, Flutter, iOS nativo, Android nativo), não mutuamente exclusivos — e escreve `backend-conventions.md`/`frontend-conventions.md`/`mobile-conventions.md` pros que forem realmente encontrados. Infere convenções arquiteturais e identifica o stack a partir do arquivo de manifesto por domínio — depois roda o `adr-compliance-checker` contra a base de código existente, então adotar o CoDriDe num projeto já existente já mostra onde o código divergiu das próprias decisões documentadas.
 
 - **Uso**: `/engineer:discover`, ou `/engineer:discover --verbose` pra uma execução detalhada
 - **Dicas**: escreva suas ADRs *antes* de rodar isso se puder — quanto mais decisões estiverem documentadas, mais o `adr-compliance-checker` tem pra checar, tanto aqui quanto de novo depois durante o `/engineer:work`.
@@ -413,7 +413,8 @@ docs/
 │   └── CUSTOMER_PERSONAS.md, PRODUCT_STRATEGY.md, COMPETITIVE_LANDSCAPE.md, ... (ver /bootstrap:business-docs)
 └── technical-context/          # o formato depende de qual comando gerou:
     ├── project-briefing.md      #   /engineer:discover  → briefing compacto (+ briefing/*.md abaixo)
-    ├── briefing/                 #   critical-rules, adrs-summary, backend-conventions, tech-stack
+    ├── briefing/                 #   critical-rules, adrs-summary, tech-stack, + backend/frontend/mobile-conventions
+    │                             #   (só os domínios realmente detectados — não mutuamente exclusivos)
     ├── index.md                 #   /bootstrap:tech-docs → ponto de entrada pro conjunto completo abaixo
     ├── adr/                      # Architecture Decision Records
     └── project_charter.md, CODEBASE_GUIDE.md, BUSINESS_LOGIC.md, API_SPECIFICATION.md, ...

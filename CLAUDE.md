@@ -16,7 +16,8 @@ For full command-by-command documentation, best practices, and adoption instruct
    ├─ (new or unfamiliar project) /engineer:doctor ─── pre-flight check: gh auth, default branch,
    │                                                     test suite, master docs, labels, monorepo shape
    │
-   ├─ (once, optional) /engineer:discover ─── scans ADRs + backend, writes docs/technical-context/project-briefing.md,
+   ├─ (once, optional) /engineer:discover ─── scans ADRs + whichever domains are present (backend/
+   │                                            frontend/mobile), writes docs/technical-context/project-briefing.md,
    │                                            checks existing code against those ADRs (adr-compliance-checker)
    │
    ├─ Product track
