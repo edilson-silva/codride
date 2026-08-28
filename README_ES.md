@@ -9,7 +9,7 @@
 ![GitHub issues](https://img.shields.io/github/issues/edilson-silva/codride)
 ![GitHub license](https://img.shields.io/github/license/edilson-silva/codride)
 
-**Context Driven Development para Claude Code**
+**Context Driven Development multi-LLM**
 
 [English](./README.md) | [Português (Brasil)](./README_PT-BR.md) | Español
 
@@ -25,9 +25,9 @@ Un pipeline estructurado — master docs, GitHub Issues y 8 agentes enfocados �
 
 ### ¿Qué es esto?
 
-CoDriDe es un framework de Context Driven Development (CDD) para Claude Code: un conjunto de comandos y agentes (que viven bajo `.claude/`) que estructuran cómo un proyecto pasa de una idea sin pulir a un PR fusionado — con una fuente de verdad persistente y versionada (**master docs**) contra la que se valida cada feature, y **GitHub Issues** como sistema de registro para la gestión del proyecto.
+CoDriDe es un framework de Context Driven Development (CDD): un conjunto de comandos y agentes que estructuran cómo un proyecto pasa de una idea sin pulir a un PR fusionado — con una fuente de verdad persistente y versionada (**master docs**) contra la que se valida cada feature, y **GitHub Issues** como sistema de registro para la gestión del proyecto. Funciona de forma nativa en cuatro CLI de IA — **Claude Code, Gemini CLI, Codex CLI y GitHub Copilot CLI** — a partir de una única fuente canónica (ver [Soporte Multi-LLM](#soporte-multi-llm)).
 
-Este repositorio *es* el framework: aquí no hay código de aplicación. Copias `.claude/` (y `CLAUDE.md`) al proyecto que realmente quieres construir, y los comandos de CoDriDe quedan disponibles ahí.
+Este repositorio *es* el framework: aquí no hay código de aplicación. Copias la carpeta generada de tu herramienta (`.claude/` + `CLAUDE.md` para Claude Code, o el equivalente nativo de otra CLI) al proyecto que realmente quieres construir, y los comandos de CoDriDe quedan disponibles ahí.
 
 ### ¿Qué problemas resuelve?
 
@@ -49,11 +49,13 @@ Este repositorio *es* el framework: aquí no hay código de aplicación. Copias 
 
 ### Prerrequisitos
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code)
+- Una de las cuatro CLI soportadas: [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Gemini CLI](https://github.com/google-gemini/gemini-cli), [Codex CLI](https://developers.openai.com/codex), o [GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli)
 - [CLI de `gh`](https://cli.github.com/), instalada y autenticada (`gh auth status`)
 - Git
 
 ### Configuración en 6 Pasos
+
+Los pasos y ejemplos de abajo usan la sintaxis de Claude Code — la implementación nativa y canónica de CoDriDe. ¿Usas otra herramienta? Los mismos 6 pasos aplican; consulta la sintaxis exacta de invocación de tu CLI en la guía correspondiente — [Gemini CLI](docs/llm-guides/gemini.md), [Codex CLI](docs/llm-guides/codex.md), [GitHub Copilot CLI](docs/llm-guides/copilot.md) — o en [Soporte Multi-LLM](#soporte-multi-llm) más abajo.
 
 **Paso 1: Obtén el framework**
 ```bash
@@ -86,25 +88,25 @@ claude "/engineer:discover"
 claude "/warm-up"
 ```
 
-Los pasos de arriba asumen Claude Code. ¿Vas a usar otra LLM CLI? Ve [Soporte Multi-LLM](#soporte-multi-llm).
-
 ### Ejemplo de Primera Feature
+
+Este es el camino rápido: va directo de `/product:collect` a `/product:spec`, confiando en las verificaciones que `spec` ya hace internamente (equivalentes a `refine` y `validate` — ver la nota en la [Referencia de Comandos](#-referencia-de-comandos)). Para ver el flujo completo por etapas, con `refine` y `validate` como pasos separados, ve el ["Ejemplo 1"](#ejemplo-1-feature-completa-de-principio-a-fin) más abajo.
 
 ```bash
 claude "/product:collect Los usuarios no pueden restablecer su contraseña si su email tiene un plus-alias"
 # → crea un issue de GitHub
 
-claude "/product:spec 42"
+claude "/product:spec #42"
 # → lo expande a un PRD completo con criterios de aceptación BDD
 
 claude "/engineer:context fix/password-reset-plus-alias"
-# → entrevista → context.md
+# → entrevista → .claude/work/fix/password-reset-plus-alias/context.md
 
 claude "/engineer:architecture fix/password-reset-plus-alias"
-# → diseño → architecture.md, verificado contra context.md
+# → diseño → .claude/work/fix/password-reset-plus-alias/architecture.md, verificado contra context.md
 
 claude "/engineer:plan fix/password-reset-plus-alias"
-# → plan.md por fases, bloques de ~2h
+# → .claude/work/fix/password-reset-plus-alias/plan.md, por fases en bloques de ~2h
 
 claude "/engineer:work .claude/work/fix/password-reset-plus-alias"
 # → implementa fase por fase, test-first; sincroniza el issue de GitHub a medida que avanza
@@ -231,7 +233,7 @@ Adoptar CoDriDe para una herramienta distinta de Claude Code funciona igual que 
 
 ## 📋 Referencia de Comandos
 
-Los comandos se invocan como `/<carpeta>:<archivo>`, p. ej. `.claude/commands/product/spec.md` → `/product:spec`. `/warm-up` vive en el nivel raíz, así que es solo `/warm-up`.
+Los comandos se invocan como `/<carpeta>:<archivo>`, p. ej. `.claude/commands/product/spec.md` → `/product:spec`. `/warm-up` vive en el nivel raíz, así que es solo `/warm-up`. Esa es la sintaxis de Claude Code — Gemini CLI usa la misma convención `/namespace:comando`; Codex CLI y GitHub Copilot CLI usan nombres planos (`product-spec`, `engineer-doctor`) sin namespace por carpeta. El rol de cada comando es el mismo en las cuatro herramientas; solo cambia la sintaxis de invocación — consulta la guía de tu CLI en [Soporte Multi-LLM](#soporte-multi-llm).
 
 <details>
 <summary><strong>Configuración</strong> — <code>/warm-up</code>, <code>/engineer:doctor</code>, <code>/engineer:discover</code></summary>
@@ -279,29 +281,32 @@ Construye o actualiza un `index.md` que apunta a cada archivo de documentación 
 
 </details>
 
-<details open>
+<details>
 <summary><strong>Vía de producto</strong> — <code>/product:*</code></summary>
 
 #### `/product:collect`
 Captura una idea sin pulir o un reporte de bug como un issue de GitHub, con la claridad justa para recordarlo después — sin especificación completa todavía.
 
 - **Uso**: `/product:collect "los usuarios no pueden restablecer su contraseña si su email tiene un plus-alias"`
+- **Consejos**: ¿usas Jira, Linear, Asana, Trello, Azure DevOps u otra herramienta externa de PM? Pegar el título/descripción de la tarea como texto en el argumento siempre funciona. Referenciar solo el ID (`/product:collect PROJ-123`) también puede funcionar, pero **no es una integración soportada por el framework** — depende enteramente de que el modelo infiera que ese ID se refiere a un ticket externo y decida, por su cuenta, llamar a alguna tool MCP conectada en la sesión que considere capaz de "resolver" esa referencia. Sin un MCP de esa herramienta conectado, o si el modelo no hace esa inferencia, el ID se trata como texto literal.
 
 #### `/product:refine`
-Convierte un requisito recolectado en un documento estructurado de POR QUÉ / QUÉ / CÓMO, mediante un diálogo de preguntas aclaratorias.
+Convierte un requisito recolectado en un documento estructurado de POR QUÉ / QUÉ / CÓMO. Actualiza el issue o el archivo indicado directamente (`gh issue edit` o edición del archivo) — no crea un archivo nuevo.
 
-- **Uso**: `/product:refine 42` (un número de issue de GitHub) o `/product:refine <ruta/al/archivo.md>`
+- **Uso**: `/product:refine #42` (un número de issue de GitHub) o `/product:refine <ruta/al/archivo.md>`
 
 #### `/product:validate`
 Valida una o más features descritas contra los master docs del proyecto, reportando qué está alineado y qué contradice un master doc específico (con cita).
 
-- **Uso**: `/product:validate "agregar inicio de sesión social vía Google y GitHub"`
+- **Uso**: `/product:validate "agregar inicio de sesión social vía Google y GitHub"` — texto libre, no el ID de un issue; funciona incluso antes de que exista un issue.
 - **Consejos**: no confundir con `/engineer:validate`, que verifica la *rama* después del hecho — este verifica la *idea*, antes de que se construya nada.
 
 #### `/product:spec`
 Expande un requisito validado en un PRD completo: descripción general del producto, requisitos funcionales (numerados `FR-01`, `FR-02`, ...) con criterios de aceptación BDD, requisitos no funcionales, consideraciones de UX y técnicas, riesgos, restricciones. También guarda `docs/business-context/features/<slug>.md` en el formato que `/product:sync-github` espera.
 
-- **Uso**: `/product:spec 42`
+El propio `/product:spec` ya hace, internamente, lo que `/product:refine` y `/product:validate` hacen por separado: su Paso 1 confirma si el requisito tiene suficiente WHY/WHAT/HOW (preguntando al usuario si no lo tiene), y su Paso 2 lo verifica contra los master docs del proyecto. Por eso es válido ir directo de `/product:collect` a `/product:spec`, sin ejecutar `refine`/`validate` antes — es un atajo, no un error. Ejecutar los pasos por separado antes sigue teniendo sentido para requisitos más grandes o riesgosos, donde vale la pena tener cada verificación como un checkpoint humano explícito (el issue documentado por `refine`, el reporte con citas de `validate`) antes de generar el PRD completo.
+
+- **Uso**: `/product:spec #42` (número de issue) o `/product:spec "<requisito en texto libre>"`
 
 #### `/product:brainstorm`
 Una sesión de brainstorming estructurada y deliberadamente adversarial para decisiones abiertas de producto o negocio — genera alternativas reales, matrices de compensación y riesgo, y una recomendación fundamentada, y luego se detiene para revisión humana.
@@ -310,9 +315,12 @@ Una sesión de brainstorming estructurada y deliberadamente adversarial para dec
 - **Consejos**: es el comando más pesado del framework — resérvalo para decisiones con alternativas reales que vale la pena sopesar.
 
 #### `/product:quick-spec`
-Crea un issue de GitHub ya completamente especificado directamente desde una descripción de tarea, sin el diálogo de varios pasos de recolectar → refinar → especificar.
+Crea un issue de GitHub ya completamente especificado directamente desde una descripción de tarea, sin el diálogo de varios pasos de recolectar → refinar → especificar. También guarda `docs/business-context/features/<slug>.md`, igual que `/product:spec`.
+
+Los datos vienen de dos fuentes: la descripción de la tarea que pasas como argumento, y la documentación existente del proyecto (`README.md` + `docs/`), que lee primero para inferir arquitectura, bibliotecas sugeridas (priorizando las que ya se usan en el proyecto) y componentes afectados. "Sin entrevista" significa que se salta la ronda estructurada de preguntas de `/product:refine` — igual **presenta su entendimiento y pide tu confirmación antes de crear el issue**, y solo hace preguntas extra si algo esencial no se puede inferir de la tarea + los docs.
 
 - **Uso**: `/product:quick-spec "agregar límite de tasa a la API pública, 100 solicitudes/min por API key"`
+- **Consejos**: cuanto más completos estén los master docs del proyecto, menos preguntas aclaratorias necesita hacer — si el proyecto todavía no tiene `docs/business-context/`/`docs/technical-context/`, espera más preguntas, o considera usar el pipeline por etapas (`/product:collect` → `/product:refine` → `/product:spec`) para tareas con ambigüedad real. Misma salvedad que `/product:collect` sobre referenciar un ID de ticket externo (Jira, Linear, etc.) en vez de pegar la descripción: puede funcionar, pero depende de que el modelo infiera y llame por su cuenta a una tool MCP conectada — no es algo que el comando resuelva de forma garantizada.
 
 #### `/product:sync-github`
 Mantiene `docs/business-context/features/*.md` sincronizado con las GitHub Issues de este repositorio — crea issues faltantes, actualiza los que se desalinearon, marca huérfanos. Siempre muestra una vista previa del diff antes de escribir nada.
@@ -321,28 +329,28 @@ Mantiene `docs/business-context/features/*.md` sincronizado con las GitHub Issue
 
 </details>
 
-<details open>
+<details>
 <summary><strong>Vía de ingeniería</strong> — <code>/engineer:*</code></summary>
 
 #### `/engineer:context`
-Inicia una unidad de trabajo: una entrevista para construir un entendimiento compartido, escrita en `context.md`. Primero de un par de dos pasos con `/engineer:architecture`.
+Inicia una unidad de trabajo: una entrevista para construir un entendimiento compartido, escrita en `.claude/work/<type>/<slug>/context.md`. Primero de un par de dos pasos con `/engineer:architecture`.
 
-- **Uso**: `/engineer:context feat/csv-order-export` — el argumento es `<type>/<slug>`
+- **Uso**: `/engineer:context feat/csv-order-export` — el argumento es `<type>/<slug>`, **no** el número de issue; se convierte en `.claude/work/feat/csv-order-export/context.md`
 
 #### `/engineer:architecture`
-Lee `context.md` y diseña la implementación, escrita en `architecture.md`, con una verificación de consistencia obligatoria entre ambos documentos antes de que apruebes.
+Lee `.claude/work/<type>/<slug>/context.md` y diseña la implementación, escrita en `.claude/work/<type>/<slug>/architecture.md`, con una verificación de consistencia obligatoria entre ambos documentos antes de que apruebes.
 
-- **Uso**: `/engineer:architecture feat/csv-order-export`
+- **Uso**: `/engineer:architecture feat/csv-order-export` → escribe `.claude/work/feat/csv-order-export/architecture.md`
 
 #### `/engineer:plan`
-Convierte `context.md` + `architecture.md` en un `plan.md` por fases, cada fase dimensionada para aproximadamente 2 horas de trabajo humano, reanudable si se interrumpe.
+Convierte `context.md` + `architecture.md` en un `.claude/work/<type>/<slug>/plan.md` por fases, cada fase dimensionada para aproximadamente 2 horas de trabajo humano, reanudable si se interrumpe.
 
-- **Uso**: `/engineer:plan feat/csv-order-export`
+- **Uso**: `/engineer:plan feat/csv-order-export` → escribe `.claude/work/feat/csv-order-export/plan.md`
 
 #### `/engineer:work`
 Ejecuta la siguiente fase de `plan.md`, mantiene la etiqueta de estado del issue de GitHub sincronizada en tiempo real, e implementa test-first contra cualquier criterio de aceptación BDD.
 
-- **Uso**: `/engineer:work .claude/work/feat/csv-order-export`
+- **Uso**: `/engineer:work .claude/work/feat/csv-order-export` — el argumento es la ruta de la carpeta del work item, no `<type>/<slug>` ni el número de issue
 
 #### `/engineer:pre-pr`
 Un orquestador, no una verificación en sí misma: ejecuta `/engineer:validate` y `/engineer:review` en paralelo, luego `/engineer:sync-docs` y `/engineer:coverage` secuencialmente — y te ayuda a actuar sobre su retroalimentación combinada.
@@ -595,27 +603,29 @@ El array `permissions.deny` del mismo archivo es donde `/meta:preferences` escri
 
 ## 📖 Ejemplos de Uso
 
+*(sintaxis de Claude Code — consulta la guía de tu CLI en [Soporte Multi-LLM](#soporte-multi-llm) para la sintaxis equivalente en Gemini CLI, Codex CLI o GitHub Copilot CLI)*
+
 ### Ejemplo 1: Feature Completa, de Principio a Fin
 
 ```bash
 claude "/product:collect los clientes quieren exportar su historial de pedidos como CSV"
 # → crea el issue #42 de GitHub
 
-claude "/product:refine 42"
+claude "/product:refine #42"
 # → issue #42 reescrito como POR QUÉ / QUÉ / CÓMO
 
 claude "/product:validate exportación CSV del historial de pedidos, issue #42"
-# → confirma que esto no viola ningún master doc
+# → confirma que esto no viola ningún master doc (texto libre — no es el ID del issue como argumento estructurado)
 
-claude "/product:spec 42"
+claude "/product:spec #42"
 # → PRD completo con FR-01, FR-02... y criterios de aceptación Given/When/Then;
 #   también escribe docs/business-context/features/csv-order-export.md
 
 claude "/engineer:context feat/csv-order-export"
-# → entrevista → context.md
+# → entrevista → .claude/work/feat/csv-order-export/context.md (el argumento ahora es <type>/<slug>, no el issue)
 
 claude "/engineer:architecture feat/csv-order-export"
-# → diseño → architecture.md, verificado contra context.md
+# → diseño → .claude/work/feat/csv-order-export/architecture.md, verificado contra context.md
 
 claude "/engineer:plan feat/csv-order-export"
 # → .claude/work/feat/csv-order-export/plan.md (por fases)
@@ -714,13 +724,13 @@ Este proyecto es de código abierto bajo la [Licencia MIT](./LICENSE).
 
 ## 🙏 Agradecimientos
 
-Construido sobre [Claude Code](https://docs.anthropic.com/en/docs/claude-code) de [Anthropic](https://www.anthropic.com/).
+Originado en [Claude Code](https://docs.anthropic.com/en/docs/claude-code) de [Anthropic](https://www.anthropic.com/) — la fuente canónica de CoDriDe sigue escrita a mano en ese formato — y hoy también disponible de forma nativa en [Gemini CLI](https://github.com/google-gemini/gemini-cli), [Codex CLI](https://developers.openai.com/codex) y [GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli).
 
 ---
 
 ## 🔗 Enlaces Relacionados
 
-- **Documentación de Claude Code**: [docs.anthropic.com/en/docs/claude-code](https://docs.anthropic.com/en/docs/claude-code)
+- **Documentación de las CLI**: [Claude Code](https://docs.anthropic.com/en/docs/claude-code) • [Gemini CLI](https://github.com/google-gemini/gemini-cli) • [Codex CLI](https://developers.openai.com/codex) • [GitHub Copilot CLI](https://docs.github.com/en/copilot/how-tos/copilot-cli)
 - **Reporte de issues**: [GitHub Issues](https://github.com/edilson-silva/codride/issues)
 - **Conventional Commits** (la convención `type/slug` detrás de los elementos de trabajo y las ramas): [conventionalcommits.org](https://www.conventionalcommits.org/)
 
