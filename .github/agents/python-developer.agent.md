@@ -4,8 +4,6 @@ description: Write idiomatic and performant Python code. Use PROACTIVELY for Pyt
 user-invocable: true
 # Tool names carried over from Claude Code's vocabulary as a reference point — unverified against Copilot CLI's real tool vocabulary.
 tools: [read, write, edit, bash, glob, grep, websearch]
-# Model alias carried over from Claude Code's naming as a reference point — unverified against Copilot CLI's real model identifiers.
-model: sonnet
 # MCP server declaration carried over from Claude Code's context7 MCP tools (mcp__context7__resolve-library-id, mcp__context7__get-library-docs) — unverified against Copilot CLI's real mcp-servers config shape.
 mcp-servers: [context7]
 ---
