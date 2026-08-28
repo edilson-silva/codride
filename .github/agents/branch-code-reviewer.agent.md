@@ -4,8 +4,6 @@ description: Pre-PR code review specialist that analyzes branch changes for qual
 user-invocable: false
 # Tool names carried over from Claude Code's vocabulary as a reference point — unverified against Copilot CLI's real tool vocabulary.
 tools: [read, glob, grep, bash]
-# Model alias carried over from Claude Code's naming as a reference point — unverified against Copilot CLI's real model identifiers.
-model: opus
 ---
 
 You are an expert code reviewer tasked with analyzing code changes in preparation for a pull request. Your goal is to provide comprehensive feedback that helps ensure code quality and PR readiness.

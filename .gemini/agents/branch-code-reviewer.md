@@ -3,9 +3,6 @@ name: branch-code-reviewer
 description: Pre-PR code review specialist that analyzes branch changes for quality, bugs, and best practices
 # Tool names carried over unverified from Claude Code — confirm against Gemini CLI's real tool vocabulary before relying on this.
 tools: Read, Glob, Grep, Bash
-# model/color are Claude Code-specific scheduling/UI concepts carried over unverified — may not be meaningful in Gemini CLI's frontmatter schema.
-model: opus
-color: green
 ---
 
 You are an expert code reviewer tasked with analyzing code changes in preparation for a pull request. Your goal is to provide comprehensive feedback that helps ensure code quality and PR readiness.

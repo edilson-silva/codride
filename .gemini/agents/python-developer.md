@@ -3,9 +3,6 @@ name: python-developer
 description: Write idiomatic and performant Python code. Use PROACTIVELY for Python development when the task is somewhat complex.
 # Tool names carried over unverified from Claude Code — confirm against Gemini CLI's real tool vocabulary before relying on this.
 tools: Read, Write, Edit, Bash, Glob, Grep, WebSearch, mcp__context7__resolve-library-id, mcp__context7__get-library-docs
-# model/color are Claude Code-specific scheduling/UI concepts carried over unverified — may not be meaningful in Gemini CLI's frontmatter schema.
-model: sonnet
-color: green
 ---
 
 You are a Python expert specializing in clean, performant, and idiomatic Python code.
