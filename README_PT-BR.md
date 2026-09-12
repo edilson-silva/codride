@@ -55,7 +55,7 @@ Este repositório *é* o framework: não há código de aplicação aqui. Você 
 
 ### Configuração em 6 Passos
 
-Os passos e exemplos abaixo usam a sintaxe do Claude Code — a implementação nativa e canônica do CoDriDe. Usando outra ferramenta? Os mesmos 6 passos se aplicam; veja a sintaxe de invocação exata da sua CLI no guia correspondente — [Gemini CLI](docs/llm-guides/gemini.md), [Codex CLI](docs/llm-guides/codex.md), [GitHub Copilot CLI](docs/llm-guides/copilot.md) — ou em [Suporte Multi-LLM](#suporte-multi-llm) mais abaixo.
+Os passos e exemplos abaixo usam a sintaxe do Claude Code — a implementação nativa e canônica do CoDriDe. Usando outra ferramenta? Os mesmos 6 passos se aplicam; veja a sintaxe de invocação exata da sua CLI no guia correspondente — [Gemini CLI](docs/llm-guides/gemini_PT-BR.md), [Codex CLI](docs/llm-guides/codex_PT-BR.md), [GitHub Copilot CLI](docs/llm-guides/copilot_PT-BR.md) — ou em [Suporte Multi-LLM](#suporte-multi-llm) mais abaixo.
 
 **Passo 1: Baixe o framework**
 ```bash
@@ -227,7 +227,7 @@ Esses 8 são o núcleo portável do CoDriDe — nomes sem prefixo. Qualquer cois
 
 Adotar o CoDriDe pra uma ferramenta diferente do Claude Code funciona exatamente como o [Passo 2 da configuração](#-início-rápido) — só copie a saída gerada daquela ferramenta em vez de `.claude/`. A maioria dos alvos segue o padrão `.<tool>/` + `<TOOL>.md` (ex: `.gemini/` e `GEMINI.md` pro Gemini CLI); dois não seguem — a raiz gerada do Codex CLI é `.agents/` (+ `AGENTS.md`), seguindo a convenção própria do Codex em vez de uma pasta `.codex/`, e a do GitHub Copilot CLI é `.github/agents/` (+ `.github/copilot-instructions.md`), seguindo a convenção própria do GitHub em vez de uma pasta `.copilot/`. Nenhum Claude Code envolvido em nenhum momento pra nenhum desses adotantes. As pastas de work item (`context.md`/`architecture.md`/`plan.md`) também são por ferramenta, não compartilhadas — `.claude/work/` pro Claude Code, `.gemini/work/` pro Gemini CLI, `.codex/work/` pro Codex CLI, e `.copilot/work/` pro GitHub Copilot CLI — cada uma batendo com o nome da ferramenta, não com o nome da pasta de saída, nos casos em que divergem (Codex, Copilot). A decisão do adotante de não commitar a(s) pasta(s) copiada(s) de uma ferramenta ainda cobre os work items dela — só confira com cuidado qual(is) pasta(s) isso significa em cada ferramenta, já que nem sempre é a que você copiou.
 
-**Status**: Claude Code, [Gemini CLI](docs/llm-guides/gemini.md), [Codex CLI](docs/llm-guides/codex.md) e [GitHub Copilot CLI](docs/llm-guides/copilot.md) já são todos suportados hoje.
+**Status**: Claude Code, [Gemini CLI](docs/llm-guides/gemini_PT-BR.md), [Codex CLI](docs/llm-guides/codex_PT-BR.md) e [GitHub Copilot CLI](docs/llm-guides/copilot_PT-BR.md) já são todos suportados hoje.
 
 ---
 

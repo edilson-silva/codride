@@ -55,7 +55,7 @@ Este repositorio *es* el framework: aquí no hay código de aplicación. Copias 
 
 ### Configuración en 6 Pasos
 
-Los pasos y ejemplos de abajo usan la sintaxis de Claude Code — la implementación nativa y canónica de CoDriDe. ¿Usas otra herramienta? Los mismos 6 pasos aplican; consulta la sintaxis exacta de invocación de tu CLI en la guía correspondiente — [Gemini CLI](docs/llm-guides/gemini.md), [Codex CLI](docs/llm-guides/codex.md), [GitHub Copilot CLI](docs/llm-guides/copilot.md) — o en [Soporte Multi-LLM](#soporte-multi-llm) más abajo.
+Los pasos y ejemplos de abajo usan la sintaxis de Claude Code — la implementación nativa y canónica de CoDriDe. ¿Usas otra herramienta? Los mismos 6 pasos aplican; consulta la sintaxis exacta de invocación de tu CLI en la guía correspondiente — [Gemini CLI](docs/llm-guides/gemini_ES.md), [Codex CLI](docs/llm-guides/codex_ES.md), [GitHub Copilot CLI](docs/llm-guides/copilot_ES.md) — o en [Soporte Multi-LLM](#soporte-multi-llm) más abajo.
 
 **Paso 1: Obtén el framework**
 ```bash
@@ -227,7 +227,7 @@ Estos 8 son el núcleo portable de CoDriDe — nombres sin prefijo. Cualquier co
 
 Adoptar CoDriDe para una herramienta distinta de Claude Code funciona igual que el [Paso 2 de la configuración](#-inicio-rápido) — solo copia la salida generada de esa herramienta en lugar de `.claude/`. La mayoría de los objetivos sigue el patrón `.<tool>/` + `<TOOL>.md` (p. ej. `.gemini/` y `GEMINI.md` para Gemini CLI); dos no lo siguen — la raíz generada de Codex CLI es `.agents/` (+ `AGENTS.md`), siguiendo la propia convención de Codex en lugar de una carpeta `.codex/`, y la de GitHub Copilot CLI es `.github/agents/` (+ `.github/copilot-instructions.md`), siguiendo la propia convención de GitHub en lugar de una carpeta `.copilot/`. Ningún Claude Code involucrado en ningún momento para ninguno de estos adoptantes. Las carpetas de work item (`context.md`/`architecture.md`/`plan.md`) también son por herramienta, no compartidas — `.claude/work/` para Claude Code, `.gemini/work/` para Gemini CLI, `.codex/work/` para Codex CLI, y `.copilot/work/` para GitHub Copilot CLI — cada una coincidiendo con el nombre de la herramienta, no con el de la carpeta de salida, en los casos donde divergen (Codex, Copilot). La decisión del adoptante de no commitear la(s) carpeta(s) copiada(s) de una herramienta sigue cubriendo sus work items — solo verifica con cuidado cuál(es) carpeta(s) significa eso en cada herramienta, ya que no siempre es la que copiaste.
 
-**Estado**: Claude Code, [Gemini CLI](docs/llm-guides/gemini.md), [Codex CLI](docs/llm-guides/codex.md) y [GitHub Copilot CLI](docs/llm-guides/copilot.md) ya están todos soportados hoy.
+**Estado**: Claude Code, [Gemini CLI](docs/llm-guides/gemini_ES.md), [Codex CLI](docs/llm-guides/codex_ES.md) y [GitHub Copilot CLI](docs/llm-guides/copilot_ES.md) ya están todos soportados hoy.
 
 ---
 
